@@ -22,7 +22,46 @@ const createProductForm = ({ productData, handleChange, handleSubmit, iLoading, 
                     />
                 </div>
 
-                
+                <div style={{ marginBottom: '15px' }}>
+                    <label>Precio:</label>
+                    <input
+                        type="number"
+                        name="precio"
+                        value={productData.precio}
+                        onChange={handleChange}
+                        required
+                        style={{ width: '100%', padding: '10px', marginTop: '5px' }}
+                    />
+                </div>
 
-    )
-}
+                <div style={{ marginBottom: '15px' }}>
+                    <label>Stock:</label>
+                    <input
+                        type="number"
+                        name="stock"
+                        value={productData.stock}
+                        onChange={handleChange}
+                        required
+                        style={{ width: '100%', padding: '10px', marginTop: '5px' }}
+                    />
+                </div>
+
+                <div style={{ marginBottom: '20px' }}>
+                    <label>ID de Categoría:</label>
+                    <input
+                        type="number"
+                        name="categoria_id"
+                        value={productData.categoria_id}
+                        onChange={handleChange}
+                        required
+                        style={{ width: '100%', padding: '10px', marginTop: '5px' }}
+                    />
+                </div>
+                
+                <button type="submit" disabled={isLoading} style={{ width: '100%', padding: '10px', backgroundColor: '#007bff' }}>
+                    {isLoading ? 'Creando...' : 'Crear Producto'}
+                </button>
+            </form>
+        </div>
+    );
+};
