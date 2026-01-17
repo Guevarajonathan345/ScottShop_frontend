@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import api from '../api/apiService'; // Instancia con seguridad JWT
-import ProductList from '../components/ProductList'; // Componente UI
+import ProductList from '../pages/productList'; // Componente UI
 
 const ProductListContainer = ({isAdmin}) => {
   const [products, setProductos] = useState([]);
