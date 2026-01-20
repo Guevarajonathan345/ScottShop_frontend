@@ -4,12 +4,25 @@ import React, { useState, useEffect } from 'react';
 import api from '../api/apiService'; // Instancia con seguridad JWT
 import ProductList from '../pages/productList'; // Componente UI
 
-const ProductListContainer = ({isAdmin}) => {
+const ProductListContainer = ({isAdmin, isLoggedIn}) => {
   const [products, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  //limpia el estado al cerrar sesion
   useEffect(() => {
+    if (!isLoggedIn) {
+      setProductos([]);
+      setLoading(false);
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+
+    const token =localStorage.getItem('authToken');
+
+    if (!isLoggedIn || !token) return;
+
     const fetchProducts = async () => {
       try {
         setLoading(true);
@@ -35,7 +48,11 @@ const ProductListContainer = ({isAdmin}) => {
     };
 
     fetchProducts();
-  }, []); // Se ejecuta solo al inicio
+  }, [isLoggedIn]); // Se ejecuta solo al inicio
+
+    if (!isLoggedIn) {
+    return null; 
+    }
 
   // Pasa el estado al componente de presentación
   return (

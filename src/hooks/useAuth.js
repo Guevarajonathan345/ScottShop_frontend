@@ -73,6 +73,7 @@ const useAuth = () => {
     const logout = () => {
 
         //quitar token de autenticacion
+        localStorage.removeItem('userRole');
         localStorage.removeItem('authToken');
         setIsLoggedIn(false);
     };

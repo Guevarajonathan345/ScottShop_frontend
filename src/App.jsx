@@ -3,6 +3,7 @@ import ProductListContainer from './containers/ProductListContainer';
 import Login from './pages/login';
 import Register from './pages/register';
 import useAuth from './hooks/useAuth';
+import Navbar from './components/navbar';
 
 function App() {
     const {isLoggedIn, loading, error, login, isAdmin } = useAuth();
@@ -21,7 +22,10 @@ function App() {
     }
 
     return (
-    <Routes>
+        <>
+        <Navbar />
+
+        <Routes>
         {/* Ruta publica*/}
     <Route
         path="/login"
@@ -48,13 +52,16 @@ function App() {
         path="/"
         element={
             isLoggedIn ? (
-                <ProductListContainer isAdmin ={isAdmin} />
+                <ProductListContainer 
+                isAdmin ={isAdmin}
+                isLoggedIn={isLoggedIn} />
             ) : (
                 <Navigate to="/login" />
             )
         }
-    />
+        />
     </Routes>
+    </>
     );
 }
 
