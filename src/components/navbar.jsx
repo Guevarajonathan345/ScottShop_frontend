@@ -1,55 +1,39 @@
-import { Link } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import { Link } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ isLoggedIn, onLogout, isAdmin}){
 
-    const { isLoggedIn, logout, isAdmin } = useAuth();
+  return (
+    <nav className="bg-gray-900 text-white px-6 py-4 flex justify-between">
+      <Link to="/" className="text-xl font-bold">
+        ScottShop
+      </Link>
 
-    return (
-        <nav className="bg-gray-900 text-white px-6 py-4 flex justify-beetween items-center">
-
-            {/*Logo*/}
-            <Link to="/" className="text-xl font-bold"> ScottShop 
+      <div className="flex gap-4">
+        {!isLoggedIn ? (
+          <>
+            <Link to="/login" className="bg-blue-600 px-4 py-2 rounded">
+              Iniciar sesión
             </Link>
-
-            {/*Acciones */}
-            <div className= "flex gap-4 items-center">
-                {!isLoggedIn ? (
-                    <>
-                    <Link 
-                    to="/login" 
-                    className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 transition"
-                    >
-                        Iniciar Sesion
-                    </Link>
-
-                    <Link 
-                    to="/register"
-                    className="px-4 py-2 rounded  bg-gray-600 hover:bg-gray-800 transition"
-                    >
-                        Registrarse 
-                    </Link>
-                    </>
-                ) : (
-                    <>
-                    {isAdmin && (
-                        <span className="text-sm text-yellow-400 font-semibold">
-                            Administrador
-                        </span>
-                    )}
-                    <button 
-                    onClick={logout}
-                    className="px-4 py-2 rounded bg-red-600 hover:bg-red-700 transition"
-                    >
-                        Cerrar sesion
-                    </button>
-                    </>
-                )}
-            </div>
-        </nav>
-    );
+            <Link to="/register" className="bg-gray-600 px-4 py-2 rounded">
+              Registrarme
+            </Link>
+          </>
+        ) : (
+          <>
+            {isAdmin && (
+              <span className="text-yellow-400">Admin</span>
+            )}
+            <button
+              onClick={onLogout}
+              className="bg-red-600 px-4 py-2 rounded"
+            >
+              Cerrar sesión
+            </button>
+          </>
+        )}
+      </div>
+    </nav>
+  );
 }
 
 export default Navbar;
-
-

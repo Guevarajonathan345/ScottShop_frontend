@@ -3,11 +3,9 @@ import api from "../api/apiService"; //instancia de axios
 
 const useAuth = () => {
     const [isLoggedIn, setIsLoggedIn] = useState (!!localStorage.getItem("authToken"));
+    const [userRole, setUserRole] = useState(localStorage.getItem('userRole'));
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    //cargamos rol inicial
-    const [userRole, setUserRole] = useState(localStorage.getItem('userRole') || null);
-
 
     //Funcion de registro de nuevo usuario
     const register = async (nombre, email, password) => {
@@ -76,7 +74,8 @@ const useAuth = () => {
         localStorage.removeItem('userRole');
         localStorage.removeItem('authToken');
         setIsLoggedIn(false);
-    };
+        setUserRole(null);
+        };
 
     return {
         isLoggedIn, 

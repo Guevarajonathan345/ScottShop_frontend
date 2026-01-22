@@ -9,20 +9,19 @@ const ProductListContainer = ({isAdmin, isLoggedIn}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const token =localStorage.getItem('authToken');
+
   //limpia el estado al cerrar sesion
   useEffect(() => {
     if (!isLoggedIn) {
       setProductos([]);
       setLoading(false);
+      setError(null);
+      return;
     }
   }, [isLoggedIn]);
 
   useEffect(() => {
-
-    const token =localStorage.getItem('authToken');
-
-    if (!isLoggedIn || !token) return;
-
     const fetchProducts = async () => {
       try {
         setLoading(true);
@@ -36,7 +35,7 @@ const ProductListContainer = ({isAdmin, isLoggedIn}) => {
       } catch (err) {
         console.error("Fallo la petición:", err);
         
-        // ⭐️ Manejo del error 401 devuelto por el backend
+        // Manejo del error 401 devuelto por el backend
         if (err.response && err.response.status === 401) {
             setError("Acceso denegado. Por favor, inicie sesión (401).");
         } else {
@@ -50,9 +49,8 @@ const ProductListContainer = ({isAdmin, isLoggedIn}) => {
     fetchProducts();
   }, [isLoggedIn]); // Se ejecuta solo al inicio
 
-    if (!isLoggedIn) {
-    return null; 
-    }
+    if (!isLoggedIn) return null; 
+
 
   // Pasa el estado al componente de presentación
   return (

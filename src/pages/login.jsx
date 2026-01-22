@@ -12,7 +12,7 @@ const Login = ({onLoginSubmit, isLoading, loginError}) => {
 
     return ( 
         <div style={{padding: '40px', maxWidth: '400px', margin: '50px auto', 
-        border: '1px solid #ccc', borderRadiu: '10px' }}>
+        border: '1px solid #0b0b0b', borderRadiu: '10px' }}>
             <h3>Iniciar Sesión</h3>
             {loginError && <p style={{color: 'red', fontWeight: 'bold'}}>{loginError}</p>}
 
@@ -25,7 +25,7 @@ const Login = ({onLoginSubmit, isLoading, loginError}) => {
                         onChange={(e) => setEmail(e.target.value)}
                         required 
                         style={{width: '100%', padding: '10px', marginTop: '5px', 
-                        boxSizing: 'border-box'}}
+                        boxSizing: 'border-box', border: '1px solid black' }}
                         />
                 </div>
                 <div style = {{marginBottom: '20px'}}>
@@ -36,7 +36,7 @@ const Login = ({onLoginSubmit, isLoading, loginError}) => {
                             onChange={(e) => setPassword(e.target.value)}
                             required
                             style={{width: '100%', padding: '10px', marginTop: '5px', 
-                            boxSizing: 'border-box' }}
+                            boxSizing: 'border-box', border: '1px solid black' }}
                             />
                 </div>
                 <button 

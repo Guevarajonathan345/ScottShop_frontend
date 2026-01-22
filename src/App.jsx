@@ -1,4 +1,4 @@
-import {Routes, Route, Navigate} from 'react-router-dom';
+import {Routes, Route, Navigate, useNavigate} from 'react-router-dom';
 import ProductListContainer from './containers/ProductListContainer';
 import Login from './pages/login';
 import Register from './pages/register';
@@ -6,61 +6,67 @@ import useAuth from './hooks/useAuth';
 import Navbar from './components/navbar';
 
 function App() {
-    const {isLoggedIn, loading, error, login, isAdmin } = useAuth();
+    const auth = useAuth();
+    const navigate =useNavigate();
 
-    const handleLoginSubmit = async (email, password) => {
-        await login(email, password);
+    const handleLogout = () => {
+        auth.logout();
+        navigate("/login", {replace: true});
     };
-
-    
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <p>Cargando...</p>
-            </div>
-        );
-    }
 
     return (
         <>
-        <Navbar />
+        <Navbar 
+        isLoggedIn={auth.isLoggedIn}
+        isAdmin={auth.isAdmin}
+        onLogout={handleLogout}
+        />
 
         <Routes>
         {/* Ruta publica*/}
     <Route
         path="/login"
         element={
-            !isLoggedIn ? (
+            !auth.isLoggedIn ? (
                 <Login
-                onLoginSubmit={handleLoginSubmit}
-                isLoading={loading}
-                loginError={error}
+                onLoginSubmit={auth.login}
+                isLoading={auth.loading}
+                loginError={auth.error}
                 />  
             ) : (
-                <Navigate to="/" />
+                <Navigate to="/" replace />
             )  
         }
     /> 
 
     <Route
-        path="/register" 
-        element={!isLoggedIn ? <Register /> : <Navigate to="/" />}
-        />
-
-        {/* Ruta protegida */ }
-        <Route 
-        path="/"
+        path="/register"
         element={
-            isLoggedIn ? (
-                <ProductListContainer 
-                isAdmin ={isAdmin}
-                isLoggedIn={isLoggedIn} />
+            !auth.isLoggedIn ? (
+                <Register 
+                onRegisterSubmit={auth.register} 
+                isLoading={auth.loading}
+                error={auth.error} />
             ) : (
-                <Navigate to="/login" />
+                <Navigate to="/" replace />
             )
         }
+    />
+
+        {/* Ruta protegida */ }
+    <Route
+        path="/"
+        element={
+            auth.isLoggedIn ? (
+                <ProductListContainer
+                isLoggedIn={auth.isLoggedIn}
+                isAdmin={auth.isAdmin}/>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
         />
-    </Routes>
+      </Routes>
     </>
     );
 }
