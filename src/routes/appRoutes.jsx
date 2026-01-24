@@ -4,7 +4,7 @@ import ProductListContainer from '../containers/productListContainer';
 import Register from '../pages/register';
 import useAuth from '../auth/useAuth';
 
-function appRoute(){
+const appRoute = () => {
 
     const auth = useAuth();
     if (auth.loading) return <p>Cargando</p>;
@@ -55,7 +55,6 @@ function appRoute(){
           }
         />
       </Routes>
-
     );
 }
 

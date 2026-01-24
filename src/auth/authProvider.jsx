@@ -1,27 +1,14 @@
-import { useState } from "react";
+import { createContext, useState } from "react";
 import api from "../api/apiService"; //instancia de axios
 
 
-const AuthContext = createContext(null);
+export const AuthContext = createContext();
 
-export const authProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState (false);
-    const [userRole, setUserRole] = useState(null);
-    const [loading, setLoading] = useState(true);
+export const AuthProvider = ({ children }) => {
+    const [isLoggedIn, setIsLoggedIn] = useState (!!localStorage.getItem("authToken"));
+    const [userRole, setUserRole] = useState(!!localStorage.getItem("userRole"));
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
-    //restaurar sesion al recargar 
-
-    useEffect(() => {
-        const token = localStorage.getItem("authToken");
-        const role = localStorage.getItem("userRole");
-
-        if (token && role ) {
-            setIsLoggedIn (true);
-            setUserRole(role);
-        }
-        setLoading (false);
-    }, []);
 
     // Función principal para iniciar sesión
     const login = async (email, password) =>{

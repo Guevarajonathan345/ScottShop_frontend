@@ -1,36 +1,40 @@
 // src/containers/ProductListContainer.jsx
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../api/apiService'; // Instancia con seguridad JWT
-import ProductList from '../components/productList'; // Componente UI
+import ProductCard from '../containers/productCard';
+import useAuth from '../auth/useAuth';
 
-const ProductListContainer = ({isAdmin, isLoggedIn}) => {
+const ProductListContainer = () => {
+
   const [products, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const token =localStorage.getItem('authToken');
+  const auth = useAuth();
 
   //limpia el estado al cerrar sesion
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!auth.isLoggedIn) {
       setProductos([]);
       setLoading(false);
       setError(null);
       return;
     }
-  }, [isLoggedIn]);
+  }, [auth.isLoggedIn]);
 
   useEffect(() => {
+
+    if (!auth.isLoggedIn) return;
+
     const fetchProducts = async () => {
       try {
         setLoading(true);
         setError(null);
         
         // La llamada a la API es simple; la seguridad se maneja en el interceptor
-        const response = await api.get('/productos'); 
+        const { data} = await api.get('/productos'); 
         
-        setProductos(response.data);
+        setProductos(data);
 
       } catch (err) {
         console.error("Fallo la petición:", err);
@@ -47,19 +51,24 @@ const ProductListContainer = ({isAdmin, isLoggedIn}) => {
     };
 
     fetchProducts();
-  }, [isLoggedIn]); // Se ejecuta solo al inicio
+  }, [auth.isLoggedIn]); // Se ejecuta solo al inicio
 
-    if (!isLoggedIn) return null; 
+    if (!auth.isLoggedIn) return null; 
+    if (loading) return <p> Cargando inventario </p>;
+    if (error) return <p className="p-4 text-red-500"> Error {error}</p>;
 
 
   // Pasa el estado al componente de presentación
   return (
-    <ProductList 
-      products={products} 
-      isLoading={loading} 
-      error={error} 
-      isAdmin={isAdmin}
-    />
+    <div className="grid grid-cols-3 gap-4 p-6">
+      {products.map((product) => (
+        <ProductCard 
+          key = {product.id}
+          product = {product}
+          isAdmin={auth.isAdmin}
+          />
+      ))}
+    </div>
   );
 };
 

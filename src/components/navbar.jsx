@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 function Navbar({ isLoggedIn, onLogout, isAdmin}){
 
   return (
-    <nav className="bg-gray-900 text-white px-6 py-4 flex justify-between">
+    <nav className="bg-[#26872B] text-white px-6 py-4 flex justify-between">
       <Link to="/" className="text-xl font-bold">
         ScottShop
       </Link>
