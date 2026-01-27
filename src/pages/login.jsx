@@ -26,12 +26,9 @@ const Login = ({ onLoginSubmit, isLoading, loginError }) => {
       <div className="flex items-center justify-center bg-gray-100">
         <div className="bg-white p-10 rounded-xl shadow-lg w-full max-w-md">
           
-          <h2 className="text-3xl font-arial mb-2 text-gray-800">
+          <h2 className="text-3xl font-bold mb-2 text-gray-800" style={{textAlign: 'center'}}>
             Bienvenido
           </h2>
-          <p className="text-gray-500 mb-6">
-            Miles de productos de tecnologia te esperan
-          </p>
 
           {loginError && (
             <p className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">

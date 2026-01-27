@@ -13,18 +13,18 @@ const ProductListContainer = () => {
   const auth = useAuth();
 
   //limpia el estado al cerrar sesion
-  useEffect(() => {
+  {/* useEffect(() => {
     if (!auth.isLoggedIn) {
       setProductos([]);
       setLoading(false);
       setError(null);
       return;
     }
-  }, [auth.isLoggedIn]);
+  }, [auth.isLoggedIn]);*/}
 
   useEffect(() => {
 
-    if (!auth.isLoggedIn) return;
+    {/* if (!auth.isLoggedIn) return; */}
 
     const fetchProducts = async () => {
       try {
@@ -46,14 +46,14 @@ const ProductListContainer = () => {
             setError("Error de red o de servidor.");
         }
       } finally {
-        setLoading(false); 
+        setLoading(false);  
       }
     };
 
     fetchProducts();
-  }, [auth.isLoggedIn]); // Se ejecuta solo al inicio
+  }, []); // Se ejecuta solo al inicio
 
-    if (!auth.isLoggedIn) return null; 
+    {/* if (!auth.isLoggedIn) return null; */} 
     if (loading) return <p> Cargando inventario </p>;
     if (error) return <p className="p-4 text-red-500"> Error {error}</p>;
 

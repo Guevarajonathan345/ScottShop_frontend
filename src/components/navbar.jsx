@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 function Navbar({ isLoggedIn, onLogout, isAdmin}){
 
   return (
-    <nav className="bg-[#26872B] text-white px-6 py-4 flex justify-between">
-      <Link to="/" className="text-xl font-bold">
-        ScottShop
+    <nav className="bg-[#0c343d] text-white px-6 py-4 flex justify-between">
+      <Link to="/Home" className="text-sm lg:text-2xl md:text-lg font-bold">
+        Scott Digital Shop
       </Link>
 
       <div className="flex gap-4">

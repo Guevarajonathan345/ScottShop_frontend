@@ -11,7 +11,10 @@ const appRoute = () => {
 
     return (
         <Routes>
-        {/* Ruta publica*/}
+
+        <Route path="/" element={<ProductListContainer/> } />
+        
+        {/*LOGIN*/}
         <Route
         path="/login"
         element={
@@ -41,21 +44,17 @@ const appRoute = () => {
         }
         />
 
-        {/* Ruta protegida */ }
+        {/* Admin panel (mas adelante) 
         <Route
-        path="/"
+        path="/admin"
         element={
-            auth.isLoggedIn ? (
-                <ProductListContainer
-                isLoggedIn={auth.isLoggedIn}
-                isAdmin={auth.isAdmin}/>
-            ) : (
-              <Navigate to="/login" replace />
-            )
+            {auth.isAdmin ? <AdminPanel /> 
+                : 
+            <Navigate to ="/" replace />}
           }
-        />
+        /> */}
       </Routes>
     );
-}
+};
 
 export default appRoute;
