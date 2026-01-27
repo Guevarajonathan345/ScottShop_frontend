@@ -4,7 +4,7 @@ function Navbar({ isLoggedIn, onLogout, isAdmin}){
 
   return (
     <nav className="bg-[#0c343d] text-white px-6 py-4 flex justify-between">
-      <Link to="/Home" className="text-sm lg:text-2xl md:text-lg font-bold">
+      <Link to="/" className="text-sm lg:text-2xl md:text-lg font-bold">
         Scott Digital Shop
       </Link>
 
