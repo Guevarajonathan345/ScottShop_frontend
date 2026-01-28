@@ -11,7 +11,7 @@ const api = axios.create({
 });
 
 
-// 2. 🔒 Interceptor de Solicitudes (Norma Profesional y Seguridad)
+// 2. Interceptor de Solicitudes (Norma Profesional y Seguridad)
 // Esta función añade el JWT a CADA solicitud saliente si existe.
 api.interceptors.request.use (
     (config) => {

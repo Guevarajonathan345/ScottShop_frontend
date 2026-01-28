@@ -5,36 +5,19 @@ import api from '../api/apiService'; // Instancia con seguridad JWT
 import ProductCard from '../containers/productCard';
 import useAuth from '../auth/useAuth';
 
-const ProductListContainer = () => {
+const ProductListContainer = ({adminMode = false, onEdit, refresh}) => {
 
   const [products, setProductos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const auth = useAuth();
 
-  //limpia el estado al cerrar sesion
-  {/* useEffect(() => {
-    if (!auth.isLoggedIn) {
-      setProductos([]);
-      setLoading(false);
-      setError(null);
-      return;
-    }
-  }, [auth.isLoggedIn]);*/}
-
-  useEffect(() => {
-
-    {/* if (!auth.isLoggedIn) return; */}
 
     const fetchProducts = async () => {
       try {
-        setLoading(true);
-        setError(null);
-        
+
         // La llamada a la API es simple; la seguridad se maneja en el interceptor
-        const { data} = await api.get('/productos'); 
+        const { data } = await api.get('/productos'); 
         
-        setProductos(data);
+        setProductos(data); 
 
       } catch (err) {
         console.error("Fallo la petición:", err);
@@ -45,17 +28,20 @@ const ProductListContainer = () => {
         } else {
             setError("Error de red o de servidor.");
         }
-      } finally {
-        setLoading(false);  
       }
     };
 
-    fetchProducts();
-  }, []); // Se ejecuta solo al inicio
+    useEffect(() => {
+      fetchProducts();
+    }, [refresh]);
 
-    {/* if (!auth.isLoggedIn) return null; */} 
-    if (loading) return <p> Cargando inventario </p>;
-    if (error) return <p className="p-4 text-red-500"> Error {error}</p>;
+    const handleDelete = async (id) => {
+
+      if(!window.confirm("Deseas eliminar este producto?")) return;
+      await api.delete(`/productos/${id}`);
+      fetchProducts();
+    };
+
 
 
   // Pasa el estado al componente de presentación
@@ -65,7 +51,9 @@ const ProductListContainer = () => {
         <ProductCard 
           key = {product.id}
           product = {product}
-          isAdmin={auth.isAdmin}
+          isAdmin={adminMode && auth.isAdmin}
+          onDelete={() => handleDelete (product.id)}
+          onEdit= {() => onEdit && onEdit(product)}
           />
       ))}
     </div>

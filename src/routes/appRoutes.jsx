@@ -1,8 +1,9 @@
-import {Routes, Route, Navigate, useNavigate} from 'react-router-dom';
+import {Routes, Route, Navigate} from 'react-router-dom';
 import Login from '../pages/login';
 import ProductListContainer from '../containers/productListContainer';
 import Register from '../pages/register';
 import useAuth from '../auth/useAuth';
+import AdminPanel from '../pages/adminPanel';
 
 const appRoute = () => {
 
@@ -37,22 +38,22 @@ const appRoute = () => {
                 <Register 
                 onRegisterSubmit={auth.register} 
                 isLoading={auth.loading}
-                error={auth.error} />
+                loginError={auth.error}
+                />
             ) : (
                 <Navigate to="/" replace />
             )
         }
         />
 
-        {/* Admin panel (mas adelante) 
+        {/* Admin panel */} 
         <Route
         path="/admin"
         element={
-            {auth.isAdmin ? <AdminPanel /> 
-                : 
+            auth.isLoggedIn && auth.isAdmin ? <AdminPanel /> 
+            : 
             <Navigate to ="/" replace />}
-          }
-        /> */}
+        /> 
       </Routes>
     );
 };
