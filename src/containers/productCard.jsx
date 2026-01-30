@@ -1,15 +1,11 @@
-const ProductCard = ({ product, isAdmin, onDelete }) => {
+const ProductCard = ({ product, isAdmin, onDelete, onEdit }) => {
+    const API_URL = import.meta.env.VITE_API_URL;
     return (
 
     <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
             {/* Imagen */}
       <img
-        src={
-            product.imagen ? 
-            `http://localhost:3000/uploads/${product.imagen}`
-            :
-            "noImage"
-        }
+        src={`${API_URL}/uploads/${product.imagen}`}
         alt={product.nombre}
         className="w-full h-48 object-cover"
       />    
@@ -33,10 +29,13 @@ const ProductCard = ({ product, isAdmin, onDelete }) => {
 
             {isAdmin && (
                 <div className="flex gap-2 mt-2">
-                    <button className = "bg-green-500 text-white px-2">
+                    <button className = "bg-green-500 text-white px-2"
+                        onClick={() => onEdit(product)}
+                    >
                         Editar
                     </button>
-                    <button onClick= {() => onDelete(product.id)} className = "bg-red-600 text-red-400 px-2">
+                    <button onClick= {() => onDelete(product.id)} 
+                    className = "bg-red-600 text-red-400 px-2">
                         Eliminar
                     </button>
                 </div>

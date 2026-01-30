@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import api from "../api/apiService";
 import ProductListContainer from '../containers/productListContainer';
 import ProductForm from "../components/productForm";
 
 const AdminPanel = () => {
-  const [refresh, setRefresh] = useState([false]);
+  const [refresh, setRefresh] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
   const handleEdit = (product) => {

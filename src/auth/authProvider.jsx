@@ -7,6 +7,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState (!!localStorage.getItem("authToken"));
     const [userRole, setUserRole] = useState(!!localStorage.getItem("userRole"));
+    const [userName, setUserName] = useState(!!localStorage.getItem("userName"));
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -22,8 +23,11 @@ export const AuthProvider = ({ children }) => {
             //Guardar el rol en LocalStorage para recargas rápidas
             localStorage.setItem("userRole", data.rol);
             
+            localStorage.setItem("userName", data.nombre);
+            
             setIsLoggedIn(true);
             setUserRole(data.rol); // actualiza estado del rol
+            setUserName(data.nombre);
             
             return true;
 
@@ -50,9 +54,12 @@ export const AuthProvider = ({ children }) => {
 
             localStorage.setItem("authToken", data.token);
             localStorage.setItem("userRole", data.rol);
+            localStorage.setItem("userName", data.nombre);
 
             setIsLoggedIn(true);
             setUserRole(data.rol);
+            setUserName(data.nombre);
+
             return true;
         } catch (err) {
             setError(err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Error al crear la cuenta.');
@@ -68,8 +75,10 @@ export const AuthProvider = ({ children }) => {
         //quitar token de autenticacion
         localStorage.removeItem('userRole');
         localStorage.removeItem('authToken');
+        localStorage.removeItem('userName');
         setIsLoggedIn(false);
         setUserRole(null);
+        setUserName(null);
         };
 
     return (
@@ -82,6 +91,7 @@ export const AuthProvider = ({ children }) => {
             logout, 
             register,
             userRole,
+            userName,
             isAdmin: userRole === 'admin',
         }}
         >

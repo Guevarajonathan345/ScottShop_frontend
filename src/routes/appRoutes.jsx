@@ -26,7 +26,7 @@ const appRoute = () => {
                 loginError={auth.error}
                 />  
             ) : (
-                <Navigate to="/" replace />
+                <Navigate to={auth.isAdmin ? "/admin" : "/" } replace />
             )  
         }
         /> 
@@ -41,7 +41,7 @@ const appRoute = () => {
                 loginError={auth.error}
                 />
             ) : (
-                <Navigate to="/" replace />
+                <Navigate to={auth.isAdmin ? "/admin" : "/"} replace />
             )
         }
         />

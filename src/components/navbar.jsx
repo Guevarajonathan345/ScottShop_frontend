@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import useAuth from "../auth/useAuth";
-
 function Navbar(){
 
   const auth = useAuth();
@@ -16,8 +15,14 @@ function Navbar(){
           <Link to="/admin" className="text-yellow-400">Admin</Link>
         )}
 
+        {auth.isLoggedIn && !auth.isAdmin && auth.userName && (
+          <span className="text-green-300">
+            Bienvenido, {auth.userName}
+          </span>
+        )}  
+
         {!auth.isLoggedIn ? (
-          <>
+          <>  
             <Link to="/login" className="bg-blue-600 px-4 py-2 rounded">
               Iniciar sesión
             </Link>
