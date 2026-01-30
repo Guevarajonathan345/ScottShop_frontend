@@ -1,4 +1,4 @@
-import ProductListContainer from '../containers/productListContainer';
+import ProductListContainer from '../containers/ProductListContainer';
 
 const Products = () => {
     return <ProductListContainer />;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import ProductListContainer from '../containers/productListContainer';
-import ProductForm from "../components/productForm";
+import ProductListContainer from '../containers/ProductListContainer';
+import ProductForm from "../components/ProductForm";
 
 const AdminPanel = () => {
   const [refresh, setRefresh] = useState(false);

@@ -1,9 +1,9 @@
 import {Routes, Route, Navigate} from 'react-router-dom';
-import Login from '../pages/login';
-import ProductListContainer from '../containers/productListContainer';
-import Register from '../pages/register';
+import Login from '../pages/Login';
+import ProductListContainer from '../containers/ProductListContainer';
+import Register from '../pages/Register';
 import useAuth from '../auth/useAuth';
-import AdminPanel from '../pages/adminPanel';
+import AdminPanel from '../pages/AdminPanel';
 
 const appRoute = () => {
 
