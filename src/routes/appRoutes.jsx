@@ -2,7 +2,7 @@ import {Routes, Route, Navigate} from 'react-router-dom';
 import Login from '../pages/Login';
 import ProductListContainer from '../containers/ProductListContainer';
 import Register from '../pages/Register';
-import useAuth from '../auth/useAuth';
+import useAuth from '../auth/UseAuth';
 import AdminPanel from '../pages/AdminPanel';
 
 const appRoute = () => {

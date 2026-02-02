@@ -1,9 +1,9 @@
 // src/containers/ProductListContainer.jsx
 
 import { useState, useEffect } from 'react';
-import api from '../api/apiService'; // Instancia con seguridad JWT
+import api from '../api/ApiService'; // Instancia con seguridad JWT
 import ProductCard from './ProductCard';
-import useAuth from '../auth/useAuth';
+import useAuth from '../auth/UseAuth';
 
 const ProductListContainer = ({adminMode = false, onEdit, refresh}) => {
 

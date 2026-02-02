@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../api/apiService";
+import api from "../api/ApiService";
 
 const ProductForm = ({ product, onSuccess}) => {
     const [form, setForm] = useState ({
