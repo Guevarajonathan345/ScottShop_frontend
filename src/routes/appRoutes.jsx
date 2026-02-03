@@ -4,6 +4,7 @@ import ProductListContainer from '../containers/ProductListContainer';
 import Register from '../pages/Register';
 import useAuth from '../auth/UseAuth';
 import AdminPanel from '../pages/AdminPanel';
+import PrivateRoute from './PrivateRoute';
 
 const appRoute = () => {
 
@@ -50,9 +51,10 @@ const appRoute = () => {
         <Route
         path="/admin"
         element={
-            auth.isLoggedIn && auth.isAdmin ? <AdminPanel /> 
-            : 
-            <Navigate to ="/" replace />}
+            <PrivateRoute adminOnly = {true}>
+                <AdminPanel />
+            </PrivateRoute>
+        }
         /> 
       </Routes>
     );
