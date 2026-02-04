@@ -1,4 +1,4 @@
-import { Navigate } from 'reac-router-dom'
+import { Navigate } from 'react-router-dom'
 import useAuth from '../auth/UseAuth';
 
 const PrivateRoute = ({children, adminOnly = false}) => {
