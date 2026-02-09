@@ -1,6 +1,6 @@
 import AppRoute from './routes/appRoutes';
-import Navbar from './components/navbar';
-import useAuth from './auth/useAuth';
+import Navbar from './components/Navbar';
+import useAuth from './auth/UseAuth';
 
 function App() {
 
