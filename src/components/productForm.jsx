@@ -48,10 +48,8 @@ const ProductForm = ({ product, onSuccess}) => {
         try {
             if (product) {
                 await api.put(`/productos/${product.id}`, data);
-                alert ("producto actualizado");
             } else {
                 await api.post(`/productos`, data);
-                alert ("producto creado");
             }
 
             setForm ({
@@ -71,19 +69,16 @@ const ProductForm = ({ product, onSuccess}) => {
 
     return (
         <form 
+        id="product-form"
         onSubmit={handleSubmit}
         className="bg-white p-4 rounded shadow space-y-3"
         >
-            <h2 className="font-bold text-lg">
-                {product ? "Editar producto" : "Nuevo producto"}
-            </h2>
-
             <input 
             name="nombre"
             type="text"
             value={form.nombre}
             onChange={handleChange}
-            placeholder="nombre"
+            placeholder="Nombre"
             className="border p-2 w-full"
             required
             />
@@ -93,7 +88,7 @@ const ProductForm = ({ product, onSuccess}) => {
             type="number"
             value={form.precio}
             onChange={handleChange}
-            placeholder="precio"
+            placeholder="Precio"
             className="border p-2 w-full"
             required
             />
@@ -103,7 +98,7 @@ const ProductForm = ({ product, onSuccess}) => {
             type="number"
             value={form.stock}
             onChange={handleChange}
-            placeholder="stock"
+            placeholder="Stock"
             className="border p-2 w-full"
             required
             />
@@ -113,7 +108,7 @@ const ProductForm = ({ product, onSuccess}) => {
             type="number"
             value={form.categoria_id}
             onChange={handleChange}
-            placeholder="categoria ID"
+            placeholder="Categoria ID"
             className="border p-2 w-full"
             required
             />
@@ -124,10 +119,6 @@ const ProductForm = ({ product, onSuccess}) => {
             accept="image/*"
             onChange={handleImageChange}
             />
-
-            <button className="bg-blue-600 text-white px-4 py-2 rounded">
-            {product ? "Actualizar" : "Crear"}
-            </button>
         </form>
     );
 };

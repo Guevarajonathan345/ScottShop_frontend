@@ -24,22 +24,6 @@ const ProductCard = ({ product, isAdmin, onDelete, onEdit }) => {
                 <span className="text-red-600">Agotado</span>
                 )}
             </p>
-
-
-
-            {isAdmin && (
-                <div className="flex gap-2 mt-2">
-                    <button className = "bg-green-500 text-white px-2"
-                        onClick={() => onEdit(product)}
-                    >
-                        Editar
-                    </button>
-                    <button onClick= {() => onDelete(product.id)} 
-                    className = "bg-red-600 text-red-400 px-2">
-                        Eliminar
-                    </button>
-                </div>
-            )}
         </div>
     </div>   
     );

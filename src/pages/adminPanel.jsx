@@ -51,7 +51,7 @@ const AdminPanel = () => {
               {/* TÍTULO DEL MODAL */}
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold text-gray-800">
-                  {editingProduct ? "Editar Producto" : "Nuevo Producto"}
+                  {editingProduct ? "Editar producto" : "Nuevo producto"}
                 </h2>
                 <button
                   onClick={() => setOpenForm(false)}
@@ -74,6 +74,7 @@ const AdminPanel = () => {
                 </button>
 
                 <button
+                  type="submit"
                   form="product-form"
                   className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                 >
