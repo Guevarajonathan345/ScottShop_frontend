@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import api from '../api/ApiService'; // Instancia con seguridad JWT
 import ProductCard from './ProductCard';
 import useAuth from '../auth/UseAuth';
-import { FiEdit, FiEdit2, FiTrash, FiTrash2 } from 'react-icons/fi';
+import { FiEdit2, FiTrash } from 'react-icons/fi';
+import toast from "react-hot-toast";
+import Swal from "sweetalert2"
 
 const ProductListContainer = ({adminMode = false, onEdit, refresh}) => {
   const [products, setProductos] = useState([]);
@@ -37,9 +39,24 @@ const ProductListContainer = ({adminMode = false, onEdit, refresh}) => {
 
     const handleDelete = async (id) => {
 
-      if(!window.confirm("Deseas eliminar este producto?")) return;
-      await api.delete(`/productos/${id}`);
-      fetchProducts();
+      const result = await Swal.fire({
+      title: "¿Eliminar producto?",
+      text: "Esta acción no se puede deshacer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      });
+
+      if(!result.isConfirmed) return;
+
+      try {
+        await api.delete (`/productos/${id}`);
+        toast.success("Producto eliminado correctamente");
+        fetchProducts();
+      } catch (error) {
+        toast.error("No se elimino el producto");
+      }
     };
 
 

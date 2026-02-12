@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api/ApiService";
+import toast from "react-hot-toast";
 
 const ProductForm = ({ product, onSuccess}) => {
     const [form, setForm] = useState ({
@@ -48,8 +49,11 @@ const ProductForm = ({ product, onSuccess}) => {
         try {
             if (product) {
                 await api.put(`/productos/${product.id}`, data);
+                toast.success("Producto actualizado correctamente")
+
             } else {
                 await api.post(`/productos`, data);
+                toast.success ("Producto creado correctamente")
             }
 
             setForm ({
@@ -63,7 +67,7 @@ const ProductForm = ({ product, onSuccess}) => {
 
             onSuccess && onSuccess();
         } catch (error) {
-            console.error("Error al guardar o crear el producto", error);
+            toast.error("Error al guardar o crear el producto");
         }
     };
 
