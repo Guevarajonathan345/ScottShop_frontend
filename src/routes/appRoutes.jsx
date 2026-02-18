@@ -1,11 +1,10 @@
 import {Routes, Route, Navigate} from 'react-router-dom';
 import Login from '../pages/Login';
-import ProductListContainer from '../containers/ProductListContainer';
 import Register from '../pages/Register';
 import useAuth from '../auth/UseAuth';
 import AdminPanel from '../pages/AdminPanel';
 import PrivateRoute from './PrivateRoute';
-
+import Products from '../pages/Products';
 const appRoute = () => {
 
     const auth = useAuth();
@@ -14,7 +13,7 @@ const appRoute = () => {
     return (
         <Routes>
 
-        <Route path="/" element={<ProductListContainer/> } />
+        <Route path="/" element={<Products/> } />
         
         {/*LOGIN*/}
         <Route

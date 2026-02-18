@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import ProductListContainer from '../containers/ProductListContainer';
 import ProductForm from "../components/ProductForm";
-import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+import UseProducts from "../hooks/UseProducts";
+
 
 const AdminPanel = () => {
 
-  const [refresh, setRefresh] = useState(false);
+  const { products, handleDelete, fetchProducts } = UseProducts();
   const [editingProduct, setEditingProduct] = useState(null);
   const [openForm, setOpenForm] = useState(false);
 
@@ -21,8 +22,8 @@ const AdminPanel = () => {
 
   const handleSuccess = () => {
     setEditingProduct(null);
-    setRefresh(!refresh);
     setOpenForm(true);
+    fetchProducts();
   };
 
   return (
@@ -41,7 +42,8 @@ const AdminPanel = () => {
       <ProductListContainer 
         adminMode 
         onEdit = {handleEdit}
-        refresh={refresh}
+        products={products}
+        onDelete={handleDelete}
         />
         {/* MODAL FORM */}
         {openForm && (

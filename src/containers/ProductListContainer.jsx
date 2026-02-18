@@ -1,67 +1,11 @@
-// src/containers/ProductListContainer.jsx
-
-import { useState, useEffect } from 'react';
-import api from '../api/ApiService'; // Instancia con seguridad JWT
 import ProductCard from './ProductCard';
 import useAuth from '../auth/UseAuth';
 import { FiEdit2, FiTrash } from 'react-icons/fi';
-import toast from "react-hot-toast";
-import Swal from "sweetalert2"
 
-const ProductListContainer = ({adminMode = false, onEdit, refresh}) => {
-  const [products, setProductos] = useState([]);
+
+const ProductListContainer = ({ products, adminMode = false, onEdit, onDelete }) => {
+  
   const auth = useAuth();
-
-
-    const fetchProducts = async () => {
-      try {
-
-        // La llamada a la API es simple; la seguridad se maneja en el interceptor
-        const { data } = await api.get('/productos'); 
-        
-        setProductos(data); 
-
-      } catch (err) {
-        console.error("Fallo la petición:", err);
-        
-        // Manejo del error 401 devuelto por el backend
-        if (err.response && err.response.status === 401) {
-            setError("Acceso denegado. Por favor, inicie sesión (401).");
-        } else {
-            setError("Error de red o de servidor.");
-        }
-      }
-    };
-
-    useEffect(() => {
-      fetchProducts();
-    }, [refresh]);
-
-    const handleDelete = async (id) => {
-
-      const result = await Swal.fire({
-      title: "¿Eliminar producto?",
-      text: "Esta acción no se puede deshacer",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-      });
-
-      if(!result.isConfirmed) return;
-
-      try {
-        await api.delete (`/productos/${id}`);
-        toast.success("Producto eliminado correctamente");
-        fetchProducts();
-      } catch (error) {
-        toast.error("No se elimino el producto");
-      }
-    };
-
-
-
-  // Pasa el estado al componente de presentación
 
   if (adminMode && auth.isAdmin) {
       return ( 
@@ -93,7 +37,6 @@ const ProductListContainer = ({adminMode = false, onEdit, refresh}) => {
                 <td className="p-2">{product.stock}</td>
                 <td className="p-2">{product.nombre_categoria}</td>
 
-                {adminMode && auth.isAdmin && (
                   <td className="p-2 flex gap-2">
                     <button
                       onClick={() => onEdit(product)}
@@ -103,13 +46,12 @@ const ProductListContainer = ({adminMode = false, onEdit, refresh}) => {
                     </button>
 
                     <button
-                      onClick={() => handleDelete(product.id)}
+                      onClick={() => onDelete(product.id)}
                       className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
                     >
                       <FiTrash />Eliminar
                     </button>
                   </td>
-                )}
               </tr>
             ))}
           </tbody>
