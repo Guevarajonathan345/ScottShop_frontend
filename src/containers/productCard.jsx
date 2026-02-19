@@ -1,32 +1,65 @@
-const ProductCard = ({ product, isAdmin, onDelete, onEdit }) => {
-    const API_URL = import.meta.env.VITE_API_URL;
-    return (
+const ProductCard = ({ product }) => {
+  const API_URL = import.meta.env.VITE_API_URL;
 
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
-            {/* Imagen */}
-      <img
-        src={`${API_URL}/uploads/${product.imagen}`}
-        alt={product.nombre}
-        className="w-full h-48 object-cover"
-      />    
-      <div className="border rounded p-4 shadow">
-            <h3 className="font-bold text-lg mb-2">{product.nombre}</h3>
-            <p className="text-yellow-600 text-sm">{product.nombre_categoria}</p>
-            <p className="text-gray-600 ">${product.precio}</p>
-            <p className="text-sm">
-                {product.stock > 0 ? (
-                product.stock <= 5 ? (
-                <span className="text-orange-500">Últimas unidades</span>
-                ) : (
-                <span className="text-green-600">En stock</span>
-                )
-                ) : (
-                <span className="text-red-600">Agotado</span>
-                )}
-            </p>
+  return (
+    <div className="card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300">
+
+      {/* Imagen */}
+      <figure className="w-full aspect-square bg-white flex items-center justify-center overflow-hidden">
+        <img
+          src={`${API_URL}/uploads/${product.imagen}`}
+          alt={product.nombre}
+          className="max-h-full max-w-full object-contain"
+          //object-contain bg-white w-full h-full hover:scale-105 transition-transform duration-300
+        />
+      </figure>
+
+      <div className="card-body p-4">
+
+        {/* Categoría */}
+        <span className="badge badge-secondary w-fit">
+          {product.nombre_categoria}
+        </span>
+
+        {/* Nombre */}
+        <h3 className="card-title text-lg font-semibold">
+          {product.nombre}
+        </h3>
+
+        {/* Precio */}
+        <p className="text-xl font-semibold text-primary">
+          ${product.precio}
+        </p>
+
+        {/* Stock */}
+        <p className="text-l">
+          {product.stock > 0 ? (
+            product.stock <= 5 ? (
+              <span className="text-warning font-semibold">
+                Últimas unidades
+              </span>
+            ) : (
+              <span className="text-success font-semibold">
+                En stock
+              </span>
+            )
+          ) : (
+            <span className="text-error font-semibold">
+              Agotado
+            </span>
+          )}
+        </p>
+
+        {/* Botón compra (opcional) */}
+        <div className="card-actions justify-end mt-2">
+          <button className="btn btn-primary btn-sm">
+            Comprar
+          </button>
         </div>
-    </div>   
-    );
+
+      </div>
+    </div>
+  );
 };
 
 export default ProductCard;

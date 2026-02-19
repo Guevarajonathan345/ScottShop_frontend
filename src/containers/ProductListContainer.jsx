@@ -2,66 +2,90 @@ import ProductCard from './ProductCard';
 import useAuth from '../auth/UseAuth';
 import { FiEdit2, FiTrash } from 'react-icons/fi';
 
-
 const ProductListContainer = ({ products, adminMode = false, onEdit, onDelete }) => {
-  
   const auth = useAuth();
 
+  //ADMIN (TABLA)
+
   if (adminMode && auth.isAdmin) {
-      return ( 
-      <div className="bg-white rounded shadow overflow-x-auto">
-        <table className="min-w-full border-collapse">
-          <thead className="bg-gray-100">
+    return (
+      <div className="overflow-x-auto p-4">
+        <table className="table table-zebra w-full">
+
+          <thead>
             <tr>
-              <th className="p-3 text-left font-semibold">Imagen</th>
-              <th className="p-3 text-left font-semibold">Nombre</th>
-              <th className="p-3 text-left font-semibold">Precio</th>
-              <th className="p-3 text-left font-semibold">Stock</th>
-              <th className="p-3 text-left font-semibold">Categoría</th>
-              {adminMode && <th className="p-3 text-left font-semibold">Acciones</th>}
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Categoría</th>
+              <th>Acciones</th>
             </tr>
           </thead>
 
-          <tbody className ="divide-y ">
+          <tbody>
             {products.map((product) => (
-              <tr key={product.id} className="border-b hover:bg-gray-50">
-                <td className="p-2">
-                  <img
-                    src={`http://localhost:3000/uploads/${product.imagen}`}
-                    alt={product.nombre}
-                    className="w-14 h-14 object-cover rounded"
-                  />
+              <tr key={product.id}>
+
+                <td>
+                  <div className="avatar">
+                    <div className="w-14 rounded">
+                      <img
+                        src={`http://localhost:3000/uploads/${product.imagen}`}
+                        alt={product.nombre}
+                      />
+                    </div>
+                  </div>
                 </td>
-                <td className="p-2">{product.nombre}</td>
-                <td className="p-2">${product.precio}</td>
-                <td className="p-2">{product.stock}</td>
-                <td className="p-2">{product.nombre_categoria}</td>
 
-                  <td className="p-2 flex gap-2">
-                    <button
-                      onClick={() => onEdit(product)}
-                      className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
-                    >
+                <td className="font-semibold">{product.nombre}</td>
+
+                <td className="text-primary font-bold">
+                  ${product.precio}
+                </td>
+
+                <td>
+                  <span className={`badge ${
+                    product.stock > 0 ? "badge-success" : "badge-error"
+                  }`}>
+                    {product.stock}
+                  </span>
+                </td>
+
+                <td>
+                  <span className="badge badge-secondary">
+                    {product.nombre_categoria}
+                  </span>
+                </td>
+
+                <td className="flex gap-2">
+                  <button
+                    onClick={() => onEdit(product)}
+                    className="btn btn-sm btn-warning"
+                  >
                     <FiEdit2 /> Editar
-                    </button>
+                  </button>
 
-                    <button
-                      onClick={() => onDelete(product.id)}
-                      className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
-                    >
-                      <FiTrash />Eliminar
-                    </button>
-                  </td>
+                  <button
+                    onClick={() => onDelete(product.id)}
+                    className="btn btn-sm btn-error"
+                  >
+                    <FiTrash /> Eliminar
+                  </button>
+                </td>
+
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-    );  
+    );
   }
 
+  
+  //CLIENTE (GRID)
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
       {products.map(product => (
         <ProductCard
           key={product.id}
