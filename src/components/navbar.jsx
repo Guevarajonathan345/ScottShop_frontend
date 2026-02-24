@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuth from "../auth/UseAuth";
+import CartButton from "./CartButton";
 
-function Navbar() {
+function Navbar({ onOpenCart }) {
   const auth = useAuth();
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState("light");
@@ -37,7 +38,9 @@ function Navbar() {
           </Link>
         </div>
 
-        <div className="flex-none">
+
+        <div className="flex items-center gap-2">
+            <CartButton onOpen={onOpenCart} />  
           <button
             onClick={() => setOpen(true)}
             className="btn btn-square btn-ghost text-xl text-white"
