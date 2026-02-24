@@ -8,6 +8,7 @@ const ProductForm = ({ product, onSuccess}) => {
         precio: "",
         stock: "",
         categoria_id: "",
+        descripcion: "",
     });
 
 
@@ -20,6 +21,7 @@ const ProductForm = ({ product, onSuccess}) => {
                 precio: product.precio,
                 stock: product.stock,
                 categoria_id: product.categoria_id,
+                descripcion: descripcion,
                 });
                 setImage (null);
             }
@@ -42,6 +44,7 @@ const ProductForm = ({ product, onSuccess}) => {
         data.append("precio", form.precio);
         data.append("stock", form.stock);
         data.append("categoria_id", form.categoria_id);
+        data.append("descripcion", form.descripcion);
 
         if (imagen) {
             data.append("imagen", imagen);
@@ -61,6 +64,7 @@ const ProductForm = ({ product, onSuccess}) => {
                 precio: "",
                 stock: "",
                 categoria_id: "",
+                descripcion: "",
             });
 
             setImage (null);
@@ -122,6 +126,16 @@ const ProductForm = ({ product, onSuccess}) => {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
+            />
+
+            <input 
+            name="descripcion"
+            type="text"
+            value ={form.descripcion}
+            onChange={handleChange}
+            placeholder = "Descripcion"
+            className="border p-2 w-full"
+            required
             />
         </form>
     );
