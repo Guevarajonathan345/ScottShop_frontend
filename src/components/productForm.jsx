@@ -21,7 +21,7 @@ const ProductForm = ({ product, onSuccess}) => {
                 precio: product.precio,
                 stock: product.stock,
                 categoria_id: product.categoria_id,
-                descripcion: descripcion,
+                descripcion: product.descripcion,
                 });
                 setImage (null);
             }
@@ -130,11 +130,11 @@ const ProductForm = ({ product, onSuccess}) => {
 
             <input 
             name="descripcion"
-            type="text"
             value ={form.descripcion}
             onChange={handleChange}
-            placeholder = "Descripcion"
+            placeholder = "Descripcion del producto"
             className="border p-2 w-full"
+            rows={4}
             required
             />
         </form>

@@ -19,6 +19,7 @@ const ProductListContainer = ({ products, adminMode = false, onEdit, onDelete })
               <th>Precio</th>
               <th>Stock</th>
               <th>Categoría</th>
+              <th>Descripción</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -57,6 +58,8 @@ const ProductListContainer = ({ products, adminMode = false, onEdit, onDelete })
                     {product.nombre_categoria}
                   </span>
                 </td>
+
+                <td className = "font-semibold"> {product.descripcion}</td>
 
                 <td className="flex gap-2">
                   <button

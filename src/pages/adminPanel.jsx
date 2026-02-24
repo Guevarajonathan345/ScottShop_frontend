@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ProductListContainer from '../containers/ProductListContainer';
 import ProductForm from "../components/ProductForm";
 import UseProducts from "../hooks/UseProducts";
