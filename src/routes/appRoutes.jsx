@@ -55,6 +55,11 @@ const appRoute = () => {
             </PrivateRoute>
         }
         /> 
+
+        <Route 
+        path="/:nombre" element = {<Products />}
+        />
+
       </Routes>
     );
 };

@@ -1,12 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuth from "../auth/UseAuth";
 import CartButton from "./CartButton";
 
 function Navbar({ onOpenCart }) {
   const auth = useAuth();
+  const navigate = useNavigate();
+  
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState("light");
+  const [search, setSearch] = useState("");
+
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light";
@@ -20,6 +24,14 @@ function Navbar({ onOpenCart }) {
     document.documentElement.setAttribute("data-theme", newTheme);
     localStorage.setItem("theme", newTheme);
   };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!search.trim()) return;
+    navigate(`/?search=${search}`);
+    setSearch("");
+  };
+
 
   return (
     <>
@@ -40,7 +52,17 @@ function Navbar({ onOpenCart }) {
 
 
         <div className="flex items-center gap-2">
-            <CartButton onOpen={onOpenCart} />  
+        <form onSubmit={handleSearch} className="flex items-center gap-2 rounded-lg">
+          <input
+          type="text"
+          placeholder=" Buscar productos..."
+          className="input input-sm input-bordered w-40 md:w-60 rounded-lg"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          />
+        <button className="btn btn-sm btn-primary">🔍</button>
+        </form>
+          <CartButton onOpen={onOpenCart} />  
           <button
             onClick={() => setOpen(true)}
             className="btn btn-square btn-ghost text-xl text-white"
@@ -49,6 +71,7 @@ function Navbar({ onOpenCart }) {
           </button>
         </div>
       </div>
+
 
       {/* ESPACIO POR NAVBAR FIXED */}
       <div className="h-16"></div>
@@ -89,11 +112,8 @@ function Navbar({ onOpenCart }) {
 
         <ul className="menu p-4 text-base gap-1 font-medium">
           <li className="menu-title text-white/60">Categorías</li>
-          <li><Link className="hover:bg-white/10 transition rounded-lg" to="/mobiles" onClick={() => setOpen(false)}> Mobile</Link></li>
-          <li><Link className="hover:bg-white/10 transition rounded-lg" to="/computadoras" onClick={() => setOpen(false)}> Computadoras</Link></li>
-          <li><Link className="hover:bg-white/10 transition rounded-lg" to="/contacto" onClick={() => setOpen(false)}> Contáctanos</Link></li>
-          <li><Link className="hover:bg-white/10 transition rounded-lg" to="/acerca" onClick={() => setOpen(false)}> Acerca de nosotros</Link></li>
-
+          <li><Link className="hover:bg-white/10 transition rounded-lg" to="/Telefonos" onClick={() => setOpen(false)}> Celulares</Link></li>
+          <li><Link className="hover:bg-white/10 transition rounded-lg" to="/Computadoras" onClick={() => setOpen(false)}> Computadoras</Link></li>
           <div className="divider"></div>
 
           {auth.isAdmin && (
@@ -124,8 +144,8 @@ function Navbar({ onOpenCart }) {
             </li>
           ) : (
             <>
-              <li><Link to="/login" onClick={() => setOpen(false)}> Login</Link></li>
-              <li><Link to="/register" onClick={() => setOpen(false)}> Registro</Link></li>
+              <li><Link className="hover:bg-white/10 transition rounded-lg" to="/login" onClick={() => setOpen(false)}> Login</Link></li>
+              <li><Link className="hover:bg-white/10 transition rounded-lg" to="/register" onClick={() => setOpen(false)}> Registro</Link></li>
             </>
           )}
 
