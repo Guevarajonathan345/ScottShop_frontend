@@ -28,42 +28,105 @@ const banners = [
 
 const ProductSlider = () => {
   return (
-    <div className="w-full">
+    <div className="w-full overflow-hidden">
+
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         navigation
         pagination={{ clickable: true }}
-        autoplay={{ delay: 4000 }}
+        autoplay={{ delay: 4500, disableOnInteraction: false }}
         loop
-        className="rounded-none"
+        speed={900}
       >
         {banners.map((banner) => (
           <SwiperSlide key={banner.id}>
-            <div className="relative w-full h-[220px] sm:h-[300px] md:h-[460px]">
-              
-              {/* Imagen */}
+
+            <div className="relative w-full h-[260px] sm:h-[360px] md:h-[520px] lg:h-[600px]">
+
+              {/* IMAGEN */}
               <img
                 src={banner.image}
                 alt={banner.title}
-                className="w-full h-full object-cover"
+                loading="lazy"
+                className="
+                  w-full
+                  h-full
+                  object-cover
+                  object-center
+                  scale-[1.02]
+                  transition-transform
+                  duration-700
+                "
               />
 
-              {/* Overlay glass */}
-              <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+              {/* DEGRADADO PROFESIONAL */}
+              <div className="
+                absolute inset-0
+                bg-gradient-to-r
+                from-black/70
+                via-black/30
+                to-transparent
+              " />
 
-              {/* Texto */}
-              <div className="absolute inset-0 flex flex-col justify-center items-start px-6 md:px-20 text-white">
-                <h2 className="text-2xl md:text-4xl font-bold drop-shadow">
+              {/* GLASS OVERLAY */}
+              <div className="
+                absolute inset-0
+                backdrop-blur-[1px]
+              " />
+
+              {/* TEXTO */}
+              <div className="
+                absolute
+                inset-0
+                flex
+                flex-col
+                justify-center
+                items-start
+                px-6
+                md:px-20
+                text-white
+                max-w-3xl
+              ">
+
+                <h2 className="
+                  text-2xl
+                  sm:text-3xl
+                  md:text-5xl
+                  font-bold
+                  drop-shadow-xl
+                ">
                   {banner.title}
                 </h2>
-                <p className="text-sm md:text-xl mt-2 drop-shadow">
+
+                <p className="
+                  text-sm
+                  sm:text-base
+                  md:text-xl
+                  mt-3
+                  opacity-90
+                  drop-shadow-lg
+                ">
                   {banner.subtitle}
                 </p>
+
               </div>
+
             </div>
+
           </SwiperSlide>
         ))}
       </Swiper>
+
+      <section className="py-12 text-center max-w-4xl mx-auto">
+        <h2 className="text-3xl font-bold">
+          Tecnología de última generación
+        </h2>
+        <p className="text-base-content/70 mt-3">
+          Encuentra los mejores smartphones, laptops y accesorios
+          al mejor precio.
+        </p>
+      </section>
+
     </div>
   );
 };
