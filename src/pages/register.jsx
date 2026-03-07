@@ -1,24 +1,22 @@
-import {useState} from "react";
-import LoginImage from '../assets/shopping_devices.jpg';
+import { useState } from "react";
+import LoginImage from "../assets/shopping_devices.jpg";
 
-const Register = ( { onRegisterSubmit, isLoading, registerError }) => {
-    // Estados locales para los campos del formulario
-    const [nombre, setNombre] = useState ("");
-    const [email, setEmail] = useState ("");
-    const [password, setPassword] = useState("");
+const Register = ({ onRegisterSubmit, isLoading, registerError }) => {
 
-    const handleSubmit = (e) => {
+  const [nombre, setNombre] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-        e.preventDefault();
-        // Llama a la función del Contenedor/App con los datos del estado
-        onRegisterSubmit(nombre, email, password);
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onRegisterSubmit(nombre, email, password);
+  };
 
-    return (
-    
+  return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
-            {/* Imagen lado izquierdo */}
-      <div className="hidden md:flex items-center justify-center bg-gray-900">
+
+      {/* Imagen */}
+      <div className="hidden md:flex items-center justify-center bg-base-300">
         <img
           src={LoginImage}
           alt="Tienda"
@@ -26,74 +24,94 @@ const Register = ( { onRegisterSubmit, isLoading, registerError }) => {
         />
       </div>
 
-        <div className="flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-10 rounded-xl shadow-lg w-full max-w-md">
-                <h2 className="text-3xl font-bold mb-2 text-gray-800" style={{textAlign: 'center'}}>
-                    Registrarse
-                </h2>
-                {registerError && (
-                    <p className="bg-red-100 text-red-700 p-3 reounded mb-4 text-sm">
-                        {registerError}
-                    </p> 
-                )}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Nombre
-                        </label>
-                        <input 
-                            type="text"
-                            value={nombre}
-                            onChange={(e) => setNombre (e.target.value)}
-                            required
-                            className="mt-1 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                            placeholder= "Ingresa tu nombre aqui"
-                            />
-                    </div>
+      {/* Formulario */}
+      <div className="flex items-center justify-center bg-base-200 px-4">
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                            Email
-                        </label>
-                        <input 
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail (e.target.value)}
-                            required
-                            className="mt-1 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                            placeholder= "Ingresa tu correo aqui"
-                            />
-                    </div>
+        <div className="card w-full max-w-md bg-base-100 shadow-xl">
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700">
-                        Contraseña
-                        </label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="mt-1 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                            placeholder="********"
-                        />
-                    </div>
-                    <button 
-                        type = "submit"
-                        disabled={isLoading}
-                        className= {`w-full py-2 rounded text-white font-semibold transition ${
-                isLoading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-green-600 hover:bg-green-700"
-              }`}
+          <div className="card-body">
+
+            <h2 className="text-3xl font-bold text-center">
+              Crear cuenta
+            </h2>
+
+            <p className="text-center text-base-content/60 mb-4">
+              Regístrate para comenzar a comprar
+            </p>
+
+            {registerError && (
+              <div className="alert alert-error text-sm">
+                {registerError}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+
+              {/* Nombre */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Nombre:</span>
+                </label>
+
+                <input
+                  type="text"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
+                  required
+                  placeholder=" Ingresa tu nombre"
+                  className="input input-bordered border rounded w-full mt-1 py-4"
+                />
+              </div>
+
+              {/* Email */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Email: </span>
+                </label>
+
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder=" correo@email.com"
+                  className="input input-bordered border rounded w-full mt-1 py-4"
+                />
+              </div>
+
+              {/* Password */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Contraseña</span>
+                </label>
+
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder=" ********"
+                  className="input input-bordered border rounded w-full mt-1 py-4"
+                />
+              </div>
+
+              {/* Botón */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`btn btn-primary border rounded border border-gray w-full ${
+                  isLoading ? "loading" : ""
+                }`}
               >
-                {isLoading ? "Registrando..." : "Registrarse"}
+                {isLoading ? "Registrando..." : "Crear cuenta"}
               </button>
-                </form>
-            </div>
-        </div>  
-    </div>            
-    );
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Register;

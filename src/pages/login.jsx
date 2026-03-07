@@ -1,7 +1,8 @@
 import { useState } from "react";
-import LoginImage from '../assets/shopping_devices.jpg';
+import LoginImage from "../assets/shopping_devices.jpg";
 
 const Login = ({ onLoginSubmit, isLoading, loginError }) => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,9 +13,9 @@ const Login = ({ onLoginSubmit, isLoading, loginError }) => {
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
-      
-      {/* Imagen lado izquierdo */}
-      <div className="hidden md:flex items-center justify-center bg-gray-900">
+
+      {/* Imagen */}
+      <div className="hidden md:flex items-center justify-center bg-base-300">
         <img
           src={LoginImage}
           alt="Tienda"
@@ -22,62 +23,81 @@ const Login = ({ onLoginSubmit, isLoading, loginError }) => {
         />
       </div>
 
-      {/* Formulario lado derecho */}
-      <div className="flex items-center justify-center bg-gray-100">
-        <div className="bg-white p-10 rounded-xl shadow-lg w-full max-w-md">
-          
-          <h2 className="text-3xl font-bold mb-2 text-gray-800" style={{textAlign: 'center'}}>
-            Bienvenido
-          </h2>
+      {/* Formulario */}
+      <div className="flex items-center justify-center bg-base-200 px-4">
 
-          {loginError && (
-            <p className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">
-              {loginError}
+        <div className="card w-full max-w-md bg-base-100 shadow-xl">
+
+          <div className="card-body">
+
+            <h2 className="text-3xl font-bold text-center">
+              Bienvenido
+            </h2>
+
+            <p className="text-center text-base-content/60 mb-4">
+              Inicia sesión para continuar comprando
             </p>
-          )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="mt-1 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                placeholder="Ingresa tu correo aqui"
-              />
-            </div>
+            {loginError && (
+              <div className="alert alert-error text-sm">
+                {loginError}
+              </div>
+            )}
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="mt-1 w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-600"
-                placeholder="********"
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`w-full py-2 rounded text-white font-semibold transition ${
-                isLoading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
-              }`}
-            >
-              {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
-            </button>
-          </form>
+              {/* Email */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Email</span>
+                </label>
+
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder=" correo@email.com"
+                  className="input input-bordered border rounded w-full mt-1 py-4"
+                />
+              </div>
+
+              {/* Password */}
+              <div className="form-control">
+                <label className="label">
+                  <span className="label-text">Contraseña</span>
+                </label>
+
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder=" ********"
+                  className="input input-bordered border rounded w-full mt-1 py-4"
+                />
+              </div>
+
+              {/* Botón */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`btn btn-primary border rounded border border-gray w-full ${
+                  isLoading ? "loading" : ""
+                }`}
+              >
+                {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
+              </button>
+
+            </form>
+
+            <p className="text-sm text-center mt-4">
+              ¿No tienes cuenta?{" "}
+              <a href="/register" className="link link-primary">
+                Regístrate
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
