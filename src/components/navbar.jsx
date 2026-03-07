@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useAuth from "../auth/UseAuth";
 import CartButton from "./CartButton";
@@ -6,6 +6,9 @@ import CartButton from "./CartButton";
 function Navbar({ onOpenCart }) {
   const auth = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const hideSearchandCart = location.pathname === "/login" || location.pathname === "/register";
   
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState("light");
@@ -52,7 +55,9 @@ function Navbar({ onOpenCart }) {
 
 
         <div className="flex items-center gap-2">
-        <form onSubmit={handleSearch} className="flex items-center gap-2 rounded-lg">
+          {!hideSearchandCart &&(
+            <>
+          <form onSubmit={handleSearch} className="flex items-center gap-2 rounded-lg">
           <input
           type="text"
           placeholder=" Buscar productos..."
@@ -62,7 +67,10 @@ function Navbar({ onOpenCart }) {
           />
         <button className="btn btn-sm btn-primary">🔍</button>
         </form>
-          <CartButton onOpen={onOpenCart} />  
+          <CartButton onOpen={onOpenCart} /> 
+            </>
+          )}
+
           <button
             onClick={() => setOpen(true)}
             className="btn btn-square btn-ghost text-xl text-white"
