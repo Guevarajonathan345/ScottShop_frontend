@@ -4,6 +4,7 @@ import useProducts from "../hooks/UseProducts";
 import Benefits from "../components/Benefits";
 import Footer from "../components/Footer"
 import { motion } from "framer-motion";
+import ProductSkeletonGrid from "../components/ProductSkeletonGrid";
 
 const container = {
   hidden: { opacity: 0 },
@@ -18,8 +19,6 @@ const container = {
 const Products = () => {
   const { products, loading } = useProducts();
 
-  if (loading) return <p>Cargando productos...</p>;
-
   return (
     <div> 
       <ProductSlider products={products} />
@@ -31,9 +30,11 @@ const Products = () => {
       animate="show"
       className="max-w-7xl mx-auto px-4 py-10" 
       >
-
-      <ProductListContainer products={products} />
-        
+        {loading ? (
+          <ProductSkeletonGrid />
+        ) : (
+          <ProductListContainer products={products} />
+        )}  
       </motion.div>
       <Benefits />
       <Footer />  
