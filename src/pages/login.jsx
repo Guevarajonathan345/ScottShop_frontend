@@ -1,5 +1,6 @@
 import { useState } from "react";
 import LoginImage from "../assets/shopping_devices.jpg";
+import { motion } from "framer-motion";
 
 const Login = ({ onLoginSubmit, isLoading, loginError }) => {
 
@@ -23,82 +24,92 @@ const Login = ({ onLoginSubmit, isLoading, loginError }) => {
         />
       </div>
 
-      {/* Formulario */}
+      {/* Columna formulario */}
       <div className="flex items-center justify-center bg-base-200 px-4">
 
-        <div className="card w-full max-w-md bg-base-100 shadow-xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="w-full max-w-md"
+        >
 
-          <div className="card-body">
+          <div className="card bg-base-100 shadow-xl">
 
-            <h2 className="text-3xl font-bold text-center">
-              Bienvenido
-            </h2>
+            <div className="card-body">
 
-            <p className="text-center text-base-content/60 mb-4">
-              Inicia sesión para continuar comprando
-            </p>
+              <h2 className="text-3xl font-bold text-center">
+                Bienvenido
+              </h2>
 
-            {loginError && (
-              <div className="alert alert-error text-sm">
-                {loginError}
-              </div>
-            )}
+              <p className="text-center text-base-content/60 mb-4">
+                Inicia sesión para continuar comprando
+              </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+              {loginError && (
+                <div className="alert alert-error text-sm">
+                  {loginError}
+                </div>
+              )}
 
-              {/* Email */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email</span>
-                </label>
+              <form onSubmit={handleSubmit} className="space-y-4">
 
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder=" correo@email.com"
-                  className="input input-bordered border rounded w-full mt-1 py-4"
-                />
-              </div>
+                {/* Email */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-base-content">Email:</span>
+                  </label>
 
-              {/* Password */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Contraseña</span>
-                </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    placeholder="tucorreo@email.com"
+                    className="input input-bordered w-full"
+                  />
+                </div>
 
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder=" ********"
-                  className="input input-bordered border rounded w-full mt-1 py-4"
-                />
-              </div>
+                {/* Password */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-base-content">Contraseña:</span>
+                  </label>
 
-              {/* Botón */}
-              <button
-                type="submit"
-                disabled={isLoading}
-                className={`btn btn-primary border rounded border border-gray w-full ${
-                  isLoading ? "loading" : ""
-                }`}
-              >
-                {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
-              </button>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    placeholder="********"
+                    className="input input-bordered w-full"
+                  />
+                </div>
 
-            </form>
+                {/* Botón */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className={`btn btn-primary w-full ${isLoading ? "loading" : ""}`}
+                >
+                  {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
+                </button>
 
-            <p className="text-sm text-center mt-4">
-              ¿No tienes cuenta?{" "}
-              <a href="/register" className="link link-primary">
-                Regístrate
-              </a>
-            </p>
+              </form>
+
+              <div className="divider">o</div>
+
+              <p className="text-sm text-center">
+                ¿No tienes cuenta?{" "}
+                <a href="/register" className="link link-primary font-semibold">
+                  Regístrate
+                </a>
+              </p>
+
+            </div>
           </div>
-        </div>
+
+        </motion.div>
       </div>
     </div>
   );

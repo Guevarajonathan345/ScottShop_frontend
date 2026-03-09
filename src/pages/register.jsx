@@ -1,5 +1,6 @@
 import { useState } from "react";
 import LoginImage from "../assets/shopping_devices.jpg";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Register = ({ onRegisterSubmit, isLoading, registerError }) => {
 
@@ -24,91 +25,116 @@ const Register = ({ onRegisterSubmit, isLoading, registerError }) => {
         />
       </div>
 
-      {/* Formulario */}
+      {/* Columna formulario */}
       <div className="flex items-center justify-center bg-base-200 px-4">
 
-        <div className="card w-full max-w-md bg-base-100 shadow-xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="w-full max-w-md"
+        >
 
-          <div className="card-body">
+          <div className="card bg-base-100 shadow-xl">
 
-            <h2 className="text-3xl font-bold text-center">
-              Crear cuenta
-            </h2>
+            <div className="card-body">
 
-            <p className="text-center text-base-content/60 mb-4">
-              Regístrate para comenzar a comprar
-            </p>
+              <h2 className="text-3xl font-bold text-center">
+                Crear cuenta
+              </h2>
 
-            {registerError && (
-              <div className="alert alert-error text-sm">
-                {registerError}
-              </div>
-            )}
+              <p className="text-center text-base-content/60 mb-4">
+                Regístrate para comenzar a comprar
+              </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Error animado */}
+              <AnimatePresence>
+                {registerError && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="alert alert-error text-sm"
+                  >
+                    {registerError}
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-              {/* Nombre */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Nombre:</span>
-                </label>
+              <form onSubmit={handleSubmit} className="space-y-4">
 
-                <input
-                  type="text"
-                  value={nombre}
-                  onChange={(e) => setNombre(e.target.value)}
-                  required
-                  placeholder=" Ingresa tu nombre"
-                  className="input input-bordered border rounded w-full mt-1 py-4"
-                />
-              </div>
+                {/* Nombre */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-base-content">Nombre:</span>
+                  </label>
 
-              {/* Email */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Email: </span>
-                </label>
+                  <input
+                    type="text"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    required
+                    placeholder="Ingresa tu nombre"
+                    className="input input-bordered w-full transition-all focus:scale-[1.01]"
+                  />
+                </div>
 
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder=" correo@email.com"
-                  className="input input-bordered border rounded w-full mt-1 py-4"
-                />
-              </div>
+                {/* Email */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-base-content">Email:</span>
+                  </label>
 
-              {/* Password */}
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text">Contraseña</span>
-                </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    placeholder="tucorreo@email.com"
+                    className="input input-bordered w-full transition-all focus:scale-[1.01]"
+                  />
+                </div>
 
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder=" ********"
-                  className="input input-bordered border rounded w-full mt-1 py-4"
-                />
-              </div>
+                {/* Password */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-base-content">Contraseña:</span>
+                  </label>
 
-              {/* Botón */}
-              <button
-                type="submit"
-                disabled={isLoading}
-                className={`btn btn-primary border rounded border border-gray w-full ${
-                  isLoading ? "loading" : ""
-                }`}
-              >
-                {isLoading ? "Registrando..." : "Crear cuenta"}
-              </button>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    placeholder="********"
+                    className="input input-bordered w-full transition-all focus:scale-[1.01]"
+                  />
+                </div>
 
-            </form>
+                {/* Botón */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className={`btn btn-primary w-full ${isLoading ? "loading" : ""}`}
+                >
+                  {isLoading ? "Registrando..." : "Crear cuenta"}
+                </button>
+
+              </form>
+
+              <div className="divider">o</div>
+
+              <p className="text-sm text-center">
+                ¿Ya tienes una cuenta?{" "}
+                <a href="/login" className="link link-primary font-semibold">
+                  Iniciar sesión
+                </a>
+              </p>
+
+            </div>
           </div>
-        </div>
+
+        </motion.div>
       </div>
     </div>
   );
