@@ -1,4 +1,5 @@
 import { useCart } from "../context/CartContext";
+import { motion } from "framer-motion";
 
 const CartDrawer = ({ open, onClose }) => {
   const { cart, removeFromCart, removeOne, addToCart, total } = useCart();
@@ -13,19 +14,26 @@ const CartDrawer = ({ open, onClose }) => {
       {/* HEADER */}
       <div className="p-4 flex justify-between items-center border-b border-white/10 text-white">
         <h2 className="text-lg font-bold">🛒 Carrito</h2>
-        <button onClick={onClose} className="btn btn-sm btn-circle btn-ghost text-white">✕</button>
+        <button
+          onClick={onClose}
+          className="btn btn-sm btn-circle btn-ghost text-white"
+        >
+          ✕
+        </button>
       </div>
 
       {/* BODY */}
       <div className="p-4 space-y-3 overflow-y-auto h-[calc(100%-180px)]">
-
         {cart.length === 0 && (
           <p className="text-white/70 text-center">Carrito vacío</p>
         )}
 
         {cart.map((p) => (
-          <div
-            key={p.id}
+          <motion.div
+            key={p.variantes_id}
+            layout
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
             className="flex gap-3 items-center bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/10"
           >
             {/* IMAGEN */}
@@ -39,24 +47,57 @@ const CartDrawer = ({ open, onClose }) => {
 
             {/* INFO */}
             <div className="flex-1 text-white">
-              <p className="font-semibold text-sm">{p.nombre}</p>
-              <p className="text-sm text-white/80">${p.precio}</p>
-              <p className="text-xs text-white/60">Cantidad: {p.quantity}</p>
+              <p className="font-semibold text-sm">
+                {p.nombre}
+              </p>
+
+              {/* VARIANTE */}
+              <p className="text-xs text-white/70">
+                {p.almacenamiento} / {p.ram}
+              </p>
+
+              {/* SKU opcional */}
+              <p className="text-[10px] text-white/50">
+                SKU: {p.sku}
+              </p>
+
+              <p className="text-sm text-white/80 mt-1">
+                ${p.precio} x {p.quantity}
+              </p>
             </div>
 
             {/* CONTROLES */}
             <div className="flex flex-col gap-1 text-white">
-              <button onClick={() => removeOne(p.id)} className="btn btn-sm">-</button>
-              <button onClick={() => addToCart(p)} className="btn btn-sm">+</button>
-              <button onClick={() => removeFromCart(p.id)} className="btn btn-sm btn-error">x</button>
+              <button
+                onClick={() => removeOne(p.variantes_id)}
+                className="btn btn-sm"
+              >
+                -
+              </button>
+
+              <button
+                onClick={() => addToCart(p)}
+                className="btn btn-sm"
+              >
+                +
+              </button>
+
+              <button
+                onClick={() => removeFromCart(p.variantes_id)}
+                className="btn btn-sm btn-error"
+              >
+                x
+              </button>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
       {/* FOOTER */}
       <div className="p-4 border-t border-white/10 text-white">
-        <p className="font-bold mb-2">Total: ${total}</p>
+        <p className="font-bold mb-2 text-lg">
+          Total: ${total}
+        </p>
 
         <button className="btn btn-primary w-full mb-2">
           Comprar
