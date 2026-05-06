@@ -1,14 +1,15 @@
 import { useState } from "react";
-import ProductListContainer from '../containers/ProductListContainer';
+import ProductListContainer from "../containers/ProductListContainer";
 import ProductForm from "../components/ProductForm";
 import UseProducts from "../hooks/UseProducts";
-
+import VariantManager from "../components/VariantManager";
 
 const AdminPanel = () => {
-
   const { products, handleDelete, fetchProducts } = UseProducts();
+
   const [editingProduct, setEditingProduct] = useState(null);
   const [openForm, setOpenForm] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleCreate = () => {
     setEditingProduct(null);
@@ -17,75 +18,94 @@ const AdminPanel = () => {
 
   const handleEdit = (product) => {
     setEditingProduct(product);
-    setOpenForm (true);
+    setOpenForm(true);
   };
 
   const handleSuccess = () => {
     setEditingProduct(null);
-    setOpenForm(true);
+    setOpenForm(false);
     fetchProducts();
   };
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <div className="felx justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Dashboard administrador</h1>
-        <button 
-        onClick={handleCreate}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
 
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">
+          Panel Administrador
+        </h1>
+
+        <button
+          onClick={handleCreate}
+          className="btn btn-primary"
+        >
           + Nuevo producto
         </button>
       </div>
-  
-      {/* LISTADO */}
-      <ProductListContainer 
-        adminMode 
-        onEdit = {handleEdit}
+
+      {/* TABLA */}
+      <ProductListContainer
+        adminMode
+        onEdit={handleEdit}
         products={products}
         onDelete={handleDelete}
+        onManageVariants={setSelectedProduct} 
+      />
+
+      {/* MODAL VARIANTES */}
+      {selectedProduct && (
+        <VariantManager
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          refresh={fetchProducts}
         />
-        {/* MODAL FORM */}
-        {openForm && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
-            <div className="bg-white rounded-2xl shadow-2xl w-11/12 md:w-3/4 lg:w-2/3 p-8 border border-gray-200">
-              
-              {/* TÍTULO DEL MODAL */}
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold text-gray-800">
-                  {editingProduct ? "Editar producto" : "Nuevo producto"}
-                </h2>
-                <button
-                  onClick={() => setOpenForm(false)}
-                  className="text-gray-500 hover:text-gray-800 text-2xl"
-                >
-                  ✕
-                </button>
-              </div>
+      )}
 
-              {/* FORM */}
-              <ProductForm product={editingProduct} onSuccess={handleSuccess} />
+      {/* MODAL PRODUCTO */}
+      {openForm && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
+          <div className="bg-white rounded-2xl shadow-2xl w-11/12 md:w-3/4 lg:w-2/3 p-8">
 
-              {/* BOTONES ABAJO */}
-              <div className="flex justify-end gap-3 mt-6">
-                <button
-                  onClick={() => setOpenForm(false)}
-                  className="px-5 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition"
-                >
-                  Cancelar
-                </button>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-bold">
+                {editingProduct ? "Editar producto" : "Nuevo producto"}
+              </h2>
 
-                <button
-                  type="submit"
-                  form="product-form"
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  Guardar
-                </button>
-              </div>
+              <button
+                onClick={() => setOpenForm(false)}
+                className="text-xl"
+              >
+                ✕
+              </button>
             </div>
-          </div>  
-        )}
+
+            <ProductForm
+              product={editingProduct}
+              onSuccess={handleSuccess}
+            />
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setOpenForm(false)}
+                className="btn btn-ghost"
+              >
+                Cancelar
+              </button>
+
+              <button
+                type="submit"
+                form="product-form"
+                className="btn btn-primary"
+              >
+                Guardar
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
