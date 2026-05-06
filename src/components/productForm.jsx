@@ -5,8 +5,6 @@ import toast from "react-hot-toast";
 const ProductForm = ({ product, onSuccess}) => {
     const [form, setForm] = useState ({
         nombre: "",
-        precio: "",
-        stock: "",
         categoria_id: "",
         descripcion: "",
     });
@@ -17,9 +15,7 @@ const ProductForm = ({ product, onSuccess}) => {
     useEffect (() => {
         if  (product) {
             setForm ({
-                nombre : product.nombre,
-                precio: product.precio,
-                stock: product.stock,
+                nombre: product.nombre,
                 categoria_id: product.categoria_id,
                 descripcion: product.descripcion,
                 });
@@ -41,8 +37,6 @@ const ProductForm = ({ product, onSuccess}) => {
 
         const data = new FormData();
         data.append("nombre", form.nombre);
-        data.append("precio", form.precio);
-        data.append("stock", form.stock);
         data.append("categoria_id", form.categoria_id);
         data.append("descripcion", form.descripcion);
 
@@ -61,8 +55,6 @@ const ProductForm = ({ product, onSuccess}) => {
 
             setForm ({
                 nombre: "",
-                precio: "",
-                stock: "",
                 categoria_id: "",
                 descripcion: "",
             });
@@ -87,26 +79,6 @@ const ProductForm = ({ product, onSuccess}) => {
             value={form.nombre}
             onChange={handleChange}
             placeholder="Nombre"
-            className="border p-2 w-full"
-            required
-            />
-
-            <input 
-            name="precio"
-            type="number"
-            value={form.precio}
-            onChange={handleChange}
-            placeholder="Precio"
-            className="border p-2 w-full"
-            required
-            />
-
-            <input 
-            name="stock"
-            type="number"
-            value={form.stock}
-            onChange={handleChange}
-            placeholder="Stock"
             className="border p-2 w-full"
             required
             />
