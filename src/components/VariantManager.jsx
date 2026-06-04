@@ -2,74 +2,142 @@ import { useState } from "react";
 import api from "../api/ApiService";
 import toast from "react-hot-toast";
 
-const VariantManager = ({ product, onClose, refresh }) => {
-  const [form, setForm] = useState({
-    almacenamiento: "",
-    ram: "",
-    precio: "",
-    stock: "",
-    sku: ""
-  });
+const initialForm = {
+  almacenamiento: "",
+  ram: "",
+  precio: "",
+  stock: "",
+  sku: ""
+};
 
+const VariantManager = ({ product, onClose, refresh }) => {
+
+  const [form, setForm] = useState(initialForm);
   const [editingId, setEditingId] = useState(null);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  // =========================
+  // RESET FORM
+  // =========================
+  const resetForm = () => {
+    setForm(initialForm);
+    setEditingId(null);
   };
 
+  // =========================
+  // FORMATEAR GB AUTOMÁTICO
+  // =========================
+  const formatGB = (value) => {
+
+    if (!value) return "";
+
+    let clean = value.toString().trim();
+
+    clean = clean.replace(/gb/i, "").trim();
+
+    clean = clean.replace(/\D/g, "");
+
+    return clean ? `${clean}GB` : "";
+  };
+
+  // =========================
+  // HANDLE CHANGE
+  // =========================
+  const handleChange = (e) => {
+
+    const { name, value } = e.target;
+
+    if (name === "almacenamiento" || name === "ram") {
+
+      setForm((prev) => ({
+        ...prev,
+        [name]: formatGB(value)
+      }));
+
+      return;
+    }
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // =========================
   // CREAR O EDITAR
+  // =========================
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     try {
+
       if (editingId) {
-        await api.put(`/variantes/${editingId}`, form);
+
+        await api.put(
+          `/variantes/${editingId}`,
+          form
+        );
+
         toast.success("Variante actualizada");
+
       } else {
-        await api.post(`/variantes`, {
+
+        await api.post("/variantes", {
           ...form,
           product_id: product.id
         });
+
         toast.success("Variante creada");
       }
 
-      setForm({
-        almacenamiento: "",
-        ram: "",
-        precio: "",
-        stock: "",
-        sku: ""
-      });
+      resetForm();
 
-      setEditingId(null);
-      refresh();
+      await refresh();
 
     } catch (error) {
-      toast.error("Error en variante");
+
+      toast.error(
+        error.response?.data?.message ||
+        "Error en variante"
+      );
     }
   };
 
+  // =========================
   // EDITAR
-  const handleEdit = (v) => {
+  // =========================
+  const handleEdit = (variant) => {
+
     setForm({
-      almacenamiento: v.almacenamiento,
-      ram: v.ram,
-      precio: v.precio,
-      stock: v.stock,
-      sku: v.sku
+      almacenamiento: variant.almacenamiento,
+      ram: variant.ram,
+      precio: variant.precio,
+      stock: variant.stock,
+      sku: variant.sku
     });
 
-    setEditingId(v.id);
+    setEditingId(variant.id);
   };
 
+  // =========================
   // ELIMINAR
+  // =========================
   const handleDelete = async (id) => {
+
     try {
+
       await api.delete(`/variantes/${id}`);
+
       toast.success("Variante eliminada");
-      refresh();
+
+      await refresh();
+
     } catch (error) {
-      toast.error("Error al eliminar");
+
+      toast.error(
+        error.response?.data?.message ||
+        "Error al eliminar variante"
+      );
     }
   };
 
@@ -80,56 +148,89 @@ const VariantManager = ({ product, onClose, refresh }) => {
 
         {/* HEADER */}
         <div className="flex justify-between items-center mb-4">
+
           <h2 className="text-xl font-bold">
             Variantes - {product.nombre}
           </h2>
-          <button onClick={onClose}>✕</button>
+
+          <button
+            onClick={onClose}
+            className="btn btn-sm btn-circle"
+          >
+            ✕
+          </button>
+
         </div>
 
         {/* LISTA */}
-        <div className="mb-6 max-h-60 overflow-y-auto">
-          {product.variantes?.map((v) => (
-            <div
-              key={v.id}
-              className="flex justify-between items-center border p-2 rounded mb-2"
-            >
-              <div>
-                <p className="font-semibold">
-                  {v.almacenamiento} / {v.ram}
-                </p>
-                <p className="text-sm text-gray-600">
-                  ${v.precio} | Stock: {v.stock} | SKU: {v.sku}
-                </p>
-              </div>
+        <div className="mb-6 max-h-60 overflow-y-auto space-y-2">
 
-              <div className="flex gap-2">
-                <button
-                  onClick={() => handleEdit(v)}
-                  className="btn btn-sm btn-warning"
-                >
-                  Editar
-                </button>
+          {product.variantes?.length > 0 ? (
 
-                <button
-                  onClick={() => handleDelete(v.id)}
-                  className="btn btn-sm btn-error"
-                >
-                  Eliminar
-                </button>
+            product.variantes.map((variant) => (
+
+              <div
+                key={variant.id}
+                className="flex justify-between items-center border border-gray-200 p-3 rounded-xl"
+              >
+
+                <div>
+
+                  <p className="font-semibold">
+                    {variant.almacenamiento} / {variant.ram}
+                  </p>
+
+                  <p className="text-sm text-gray-600">
+                    ${variant.precio} | Stock: {variant.stock}
+                  </p>
+
+                  <p className="text-xs text-gray-400">
+                    SKU: {variant.sku}
+                  </p>
+
+                </div>
+
+                <div className="flex gap-2">
+
+                  <button
+                    onClick={() => handleEdit(variant)}
+                    className="btn btn-sm btn-warning"
+                  >
+                    Editar
+                  </button>
+
+                  <button
+                    onClick={() => handleDelete(variant.id)}
+                    className="btn btn-sm btn-error"
+                  >
+                    Eliminar
+                  </button>
+
+                </div>
+
               </div>
+            ))
+
+          ) : (
+
+            <div className="text-center text-gray-500 py-8">
+              No hay variantes creadas
             </div>
-          ))}
+          )}
         </div>
 
         {/* FORM */}
-        <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-3">
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-3"
+        >
 
           <input
             name="almacenamiento"
             value={form.almacenamiento}
             onChange={handleChange}
             placeholder="Almacenamiento (128GB)"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             required
           />
 
@@ -138,7 +239,7 @@ const VariantManager = ({ product, onClose, refresh }) => {
             value={form.ram}
             onChange={handleChange}
             placeholder="RAM (8GB)"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             required
           />
 
@@ -148,7 +249,7 @@ const VariantManager = ({ product, onClose, refresh }) => {
             value={form.precio}
             onChange={handleChange}
             placeholder="Precio"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             required
           />
 
@@ -158,7 +259,7 @@ const VariantManager = ({ product, onClose, refresh }) => {
             value={form.stock}
             onChange={handleChange}
             placeholder="Stock"
-            className="input input-bordered"
+            className="input input-bordered w-full"
             required
           />
 
@@ -167,13 +268,27 @@ const VariantManager = ({ product, onClose, refresh }) => {
             value={form.sku}
             onChange={handleChange}
             placeholder="SKU"
-            className="input input-bordered col-span-2"
+            className="input input-bordered md:col-span-2 w-full"
             required
           />
 
-          <button className="btn btn-primary col-span-2">
-            {editingId ? "Actualizar variante" : "Crear variante"}
+          <button
+            className="btn btn-primary md:col-span-2"
+          >
+            {editingId
+              ? "Actualizar variante"
+              : "Crear variante"}
           </button>
+
+          {editingId && (
+            <button
+              type="button"
+              onClick={resetForm}
+              className="btn btn-ghost md:col-span-2"
+            >
+              Cancelar edición
+            </button>
+          )}
 
         </form>
 

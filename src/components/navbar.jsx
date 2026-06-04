@@ -49,7 +49,7 @@ function Navbar({ onOpenCart }) {
       ">
         <div className="flex-1">
           <Link to="/" className="text-2xl font-bold text-white">
-            ScottShop Digital Shop
+            Scott Digital Shop
           </Link>
         </div>
 
