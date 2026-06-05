@@ -2,15 +2,15 @@ import { useState } from "react";
 import LoginImage from "../assets/shopping_devices.jpg";
 import { motion, AnimatePresence } from "framer-motion";
 
-const Register = ({ onRegisterSubmit, isLoading, registerError }) => {
+const Register = ({ onRegisterSubmit, isLoading, RegisterError }) => {
 
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmitRegister = (e) => {
     e.preventDefault();
-    onRegisterSubmit(nombre, email, password);
+  onRegisterSubmit(nombre, email, password);
   };
 
   return (
@@ -49,19 +49,19 @@ const Register = ({ onRegisterSubmit, isLoading, registerError }) => {
 
               {/* Error animado */}
               <AnimatePresence>
-                {registerError && (
+                {RegisterError && (
                   <motion.div
                     initial={{ opacity: 0, y: -8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     className="alert alert-error text-sm"
                   >
-                    {registerError}
+                    {RegisterError}
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmitRegister} className="space-y-4">
 
                 {/* Nombre */}
                 <div className="form-control">

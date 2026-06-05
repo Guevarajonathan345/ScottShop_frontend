@@ -102,7 +102,7 @@ function Navbar({ onOpenCart }) {
           border-l border-white/10
           shadow-2xl
           transform transition-transform duration-300
-          w-full md:w-80
+          w-80
           ${open ? "translate-x-0" : "translate-x-full"}
         `}
       >
@@ -118,46 +118,78 @@ function Navbar({ onOpenCart }) {
           </button>
         </div>
 
-        <ul className="menu p-4 text-base gap-1 font-medium">
+        <ul className="menu w-full p-4 text-base gap-2 font-medium">
           <li className="menu-title text-white/60">Categorías</li>
           <li><Link className="hover:bg-white/10 transition rounded-lg" to="/Telefonos" onClick={() => setOpen(false)}> Celulares</Link></li>
           <li><Link className="hover:bg-white/10 transition rounded-lg" to="/Computadoras" onClick={() => setOpen(false)}> Computadoras</Link></li>
           <div className="divider"></div>
 
-          {auth.isAdmin && (
-            <li>
-              <Link to="/admin" className="text-warning" onClick={() => setOpen(false)}>
-              Panel Admin
-              </Link>
-            </li>
-          )}
-
-          {auth.isLoggedIn && auth.userName && (
-            <li className="text-success px-2">
-              Hola, {auth.userName}
-            </li>
-          )}
-
           {auth.isLoggedIn ? (
-            <li>
-              <button
-                onClick={() => {
-                  auth.logout();
-                  setOpen(false);
-                }}
-                className="text-error"
-              >
-              Cerrar sesión
-              </button>
-            </li>
-          ) : (
-            <>
-              <li><Link className="hover:bg-white/10 transition rounded-lg" to="/login" onClick={() => setOpen(false)}> Login</Link></li>
-              <li><Link className="hover:bg-white/10 transition rounded-lg" to="/register" onClick={() => setOpen(false)}> Registro</Link></li>
-            </>
-          )}
 
-          <div className="divider"></div>
+  <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 mb-4">
+    <div className="flex flex-col items-center text-center gap-3">
+      {/* Usuario */}
+      <div>
+        <p className="text-sm text-white/50">
+          Bienvenido
+        </p>
+
+        <h3 className="text-lg font-bold text-white">
+          {auth.userName}
+        </h3>
+      </div>
+
+      {/* Admin */}
+      {auth.isAdmin && (
+        <Link
+          to="/admin"
+          onClick={() => setOpen(false)}
+          className="btn btn-primary w-40"
+        >
+          Panel Admin
+        </Link>
+      )}
+
+      {/* Logout */}
+      <button
+        onClick={() => {
+          auth.logout();
+          setOpen(false);
+        }}
+        className="btn btn-error w-40"
+      >
+        Cerrar sesión
+      </button>
+
+    </div>
+
+  </div>
+
+) : (
+
+  <>
+    <li>
+      <Link
+        className="hover:bg-white/10 transition rounded-lg"
+        to="/login"
+        onClick={() => setOpen(false)}
+      >
+        Login
+      </Link>
+    </li>
+
+    <li>
+      <Link
+        className="hover:bg-white/10 transition rounded-lg"
+        to="/register"
+        onClick={() => setOpen(false)}
+      >
+        Registro
+      </Link>
+    </li>
+  </>
+
+)}
 
           {/* BOTÓN TEMA */}
           <button

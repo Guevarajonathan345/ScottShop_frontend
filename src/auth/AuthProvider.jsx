@@ -1,101 +1,163 @@
 import { createContext, useState } from "react";
-import api from "../api/ApiService"; //instancia de axios
-
+import api from "../api/ApiService";
+import toast from "react-hot-toast";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState (!!localStorage.getItem("authToken"));
-    const [userRole, setUserRole] = useState(!!localStorage.getItem("userRole"));
-    const [userName, setUserName] = useState(!!localStorage.getItem("userName"));
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
 
-    // Función principal para iniciar sesión
-    const login = async (email, password) =>{
-        setLoading(true);
-        setError(null);
-        try{
-            const { data } = await api.post('/login', {email, password});
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("authToken")
+  );
+  
+  const [userRole, setUserRole] = useState(
+    localStorage.getItem("userRole")
+  );
 
-            //Guardar el token de forma persistente (Norma)
-            localStorage.setItem("authToken", data.token);
-            //Guardar el rol en LocalStorage para recargas rápidas
-            localStorage.setItem("userRole", data.rol);
-            
-            localStorage.setItem("userName", data.nombre);
-            
-            setIsLoggedIn(true);
-            setUserRole(data.rol); // actualiza estado del rol
-            setUserName(data.nombre);
-            
-            return true;
+  const [userName, setUserName] = useState(
+    localStorage.getItem("userName")
+  );
 
-        } catch (err){
-            // Falla en el login (401 Unauthorized, etc.)
-            setError(err.response?.data?.message || 'Error de red o credenciales invalidas');
-            setIsLoggedIn(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-            return false;
-        }finally {
-            setLoading(false);
+  
+  // GUARDAR SESIÓN
+  
+  const saveSession = (data) => {
+
+    localStorage.setItem("authToken", data.token);
+    localStorage.setItem("userRole", data.rol);
+    localStorage.setItem("userName", data.nombre);
+
+    setIsLoggedIn(true);
+    setUserRole(data.rol);
+    setUserName(data.nombre);
+  };
+
+  
+  // LIMPIAR SESIÓN
+  
+  const clearSession = () => {
+
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userName");
+
+    setIsLoggedIn(false);
+    setUserRole(null);
+    setUserName(null);
+  };
+
+  
+  // LOGIN
+  
+  const login = async (email, password) => {
+
+    setLoading(true);
+    setError(null);
+
+    try {
+
+      const { data } = await api.post("/login", {
+        email,
+        password
+    });
+
+      saveSession(data);
+
+      toast.success(`Bienvenido de nuevo, ${data.nombre}`);
+
+      return true;
+
+
+    } catch (err) {
+
+      const message =
+        err.response?.data?.message ||
+        "Error de red o credenciales inválidas";
+
+      setError(message);
+      toast.error(message);
+      clearSession();
+
+      return false;
+
+    } finally {
+
+      setLoading(false);
+    }
+  };
+
+  // REGISTRO
+
+  const register = async (
+    nombre,
+    email,
+    password
+  ) => {
+
+    setLoading(true);
+    setError(null);
+
+    try {
+
+      const { data } = await api.post( "/registro",
+        {
+          nombre,
+          email,
+          password
         }
-    };
+      );
 
-    //Funcion de registro de nuevo usuario
-    const register = async (nombre, email, password) => {
-        setLoading(true);
-        setError(null);
+      saveSession(data);
 
-        try {
-            const { data } = await api.post('/registro', {nombre, email, password });
+      toast.success(`Cuenta creada con éxito, ${data.nombre}`);
 
-            //guardar token y autologin luego del registro
+      return true;
 
-            localStorage.setItem("authToken", data.token);
-            localStorage.setItem("userRole", data.rol);
-            localStorage.setItem("userName", data.nombre);
+    } catch (err) {
 
-            setIsLoggedIn(true);
-            setUserRole(data.rol);
-            setUserName(data.nombre);
+      const message =
+        err.response?.data?.message ||
+        err.response?.data?.errors?.[0]?.msg ||
+        "Error al crear la cuenta";
 
-            return true;
-        } catch (err) {
-            setError(err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Error al crear la cuenta.');
-            setIsLoggedIn(false);
-            return false;
-        } finally {
-            setLoading(false);
-        }
-    };
-    //cerrar sesion
-    const logout = () => {
+      setError(message);
+      toast.error(message);
 
-        //quitar token de autenticacion
-        localStorage.removeItem('userRole');
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userName');
-        setIsLoggedIn(false);
-        setUserRole(null);
-        setUserName(null);
-        };
+      clearSession();
 
-    return (
-        <AuthContext.Provider
-        value ={{
-            isLoggedIn, 
-            loading, 
-            error, 
-            login, 
-            logout, 
-            register,
-            userRole,
-            userName,
-            isAdmin: userRole === 'admin',
-        }}
-        >
-            {children}
-        </AuthContext.Provider>
-    );
+      return false;
+
+    } finally {
+
+      setLoading(false);
+    }
+  };
+
+  // LOGOUT
+
+  const logout = () => {
+    clearSession();
+    toast.success("Sesión cerrada con éxito");
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        isLoggedIn,
+        loading,
+        error,
+        login,
+        register,
+        logout,
+        userRole,
+        userName,
+        isAdmin: userRole === "admin",
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };

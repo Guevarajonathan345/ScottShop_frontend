@@ -15,17 +15,17 @@ const VariantManager = ({ product, onClose, refresh }) => {
   const [form, setForm] = useState(initialForm);
   const [editingId, setEditingId] = useState(null);
 
-  // =========================
+  
   // RESET FORM
-  // =========================
+  
   const resetForm = () => {
     setForm(initialForm);
     setEditingId(null);
   };
 
-  // =========================
+  
   // FORMATEAR GB AUTOMÁTICO
-  // =========================
+ 
   const formatGB = (value) => {
 
     if (!value) return "";
@@ -39,9 +39,9 @@ const VariantManager = ({ product, onClose, refresh }) => {
     return clean ? `${clean}GB` : "";
   };
 
-  // =========================
+  
   // HANDLE CHANGE
-  // =========================
+
   const handleChange = (e) => {
 
     const { name, value } = e.target;
@@ -62,9 +62,9 @@ const VariantManager = ({ product, onClose, refresh }) => {
     }));
   };
 
-  // =========================
+ 
   // CREAR O EDITAR
-  // =========================
+  
   const handleSubmit = async (e) => {
 
     e.preventDefault();
@@ -103,9 +103,9 @@ const VariantManager = ({ product, onClose, refresh }) => {
     }
   };
 
-  // =========================
+  
   // EDITAR
-  // =========================
+  
   const handleEdit = (variant) => {
 
     setForm({
@@ -119,9 +119,9 @@ const VariantManager = ({ product, onClose, refresh }) => {
     setEditingId(variant.id);
   };
 
-  // =========================
+  
   // ELIMINAR
-  // =========================
+  
   const handleDelete = async (id) => {
 
     try {

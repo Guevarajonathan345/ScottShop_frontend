@@ -5,7 +5,7 @@ import useAuth from '../auth/UseAuth';
 import AdminPanel from '../pages/AdminPanel';
 import PrivateRoute from './PrivateRoute';
 import Products from '../pages/Products';
-const appRoute = () => {
+const AppRoute = () => {
 
     const auth = useAuth();
     if (auth.loading) return <p>Cargando</p>;
@@ -38,7 +38,7 @@ const appRoute = () => {
                 <Register 
                 onRegisterSubmit={auth.register} 
                 isLoading={auth.loading}
-                loginError={auth.error}
+                RegisterError={auth.error}
                 />
             ) : (
                 <Navigate to={auth.isAdmin ? "/admin" : "/"} replace />
@@ -64,4 +64,4 @@ const appRoute = () => {
     );
 };
 
-export default appRoute;
+export default AppRoute;
